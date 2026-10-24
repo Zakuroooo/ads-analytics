@@ -17,7 +17,7 @@ Expected time on an M2 8 GB: ⏳ (measured in P1–P2).
 
 ## 3. Excel → Google Sheets ⏳
 Google Drive → New → File upload → `excel/ads_kpi_model.xlsx` → right-click → Open with Google Sheets.
-Then check: `Summary!B2` (total revenue) equals `numbers.json → kpi.revenue_total`.
+Then check: `KPI_Summary!B7` (total revenue) equals `ipinyou_kpi.spend_cny` in `outputs/numbers.json`, and `AB_Test!B32` shows SHIP. Not yet done (needs a Google account).
 
 ## 4. Deploy the dashboard ✅
 Vercel project `slotwise-ads` (team zakuroooo's projects), linked to GitHub `Zakuroooo/ads-analytics`, root directory `dashboard/`,
