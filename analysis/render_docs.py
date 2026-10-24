@@ -107,15 +107,35 @@ def values():
         "exposure": pct(ab["effect_on_exposed"]["exposure_rate_treatment"], 1),
         "srm_share": pct(ab["srm"]["observed_treatment_share"], 4),
         "decision": ab["decision"].upper(),
+        # extra detail used by the LEARN chapters
+        "users_t": f"{ab['counts']['T']['users']:,}", "users_c": f"{ab['counts']['C']['users']:,}",
+        "conv_n_t": f"{ab['counts']['T']['conversions']:,}", "conv_n_c": f"{ab['counts']['C']['conversions']:,}",
+        "visit_n_t": f"{ab['counts']['T']['visits']:,}", "visit_n_c": f"{ab['counts']['C']['visits']:,}",
+        "srm_p": f"{ab['srm']['p_value']:.2f}", "mde_visit": signed_pct(ab["mde_visit"]["rel"], 1),
+        "conv_p": f"{conv['p_value']:.1e}",
+        "fix_cpa": f"{float(seg['FIX']['cpa']):.4f}", "protect_cpa": f"{float(seg['PROTECT']['cpa']):.4f}",
+        "grow_cpa": f"{float(seg['GROW']['cpa']):.4f}", "watch_cpa": f"{float(seg['WATCH']['cpa']):.4f}",
+        "spend_cny_exact": f"{k['spend_cny']:,.2f}", "bids_won": f"{k['bids_won']:,}",
+        "ex1_win": pct(auction["1"]["win_rate"]), "ex4_win": pct(auction["4"]["win_rate"]),
+        "ex2_binding": pct(auction["2"]["floor_binding_rate"]),
+        "x50_lower": signed_pct(float(s50["revenue_lower_cny"]) / float(s50["revenue_now_cny"]) - 1, 1),
+        "adv_rows": "\n".join(f"| {a['category']} | {a['advertiser_id']} | {float(a['spend_cny']):,.0f} | {pct(a['spend_share'])} | {float(a['cpm_cny']):.2f} | {pct(a['ctr'], 3)} | {pct(a['win_rate'])} |" for a in adv),
+        "daily_rows": "\n".join(f"| {r['day']} | {int(r['impressions']):,} | {float(r['spend_cny']):,.2f} | {float(r['cpm_cny']):.2f} | {pct(r['win_rate'])} |" for r in daily),
     }
+
+
+LEARN_TEMPLATES = ROOT / "LEARN" / "_templates"
 
 
 def render():
     v = values()
     out = {}
-    for t in sorted(TEMPLATES.glob("*.md")):
-        target = ROOT / "README.md" if t.name == "README.md" else ROOT / "docs" / t.name
-        header = f"<!-- Generated from docs/_templates/{t.name} by analysis/render_docs.py. Edit the template, not this file. -->\n"
+    for t in sorted(TEMPLATES.glob("*.md")) + sorted(LEARN_TEMPLATES.glob("*.md")):
+        if t.parent == LEARN_TEMPLATES:
+            target = ROOT / "LEARN" / t.name
+        else:
+            target = ROOT / "README.md" if t.name == "README.md" else ROOT / "docs" / t.name
+        header = f"<!-- Generated from {t.relative_to(ROOT)} by analysis/render_docs.py. Edit the template, not this file. -->\n"
         out[target] = header + t.read_text().format_map(v)
     return out
 
