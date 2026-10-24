@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slotwise · Ads Analytics</title>
+<meta name="description" content="Ads analytics for a delivery marketplace, built on public ad data (iPinYou, Criteo). Not Swiggy data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0F1113; --ink-2: #171A1D; --ink-3: #1F2327;
+  --paper: #F4F1EA; --paper-2: #EAE6DC;
+  --text-hi: #F4F1EA; --text-lo: #9AA0A6; --text-ink: #121416; --text-ink-lo: #5B6168;
+  --rule-dark: rgba(244,241,234,.12); --rule-light: rgba(18,20,22,.12);
+  --accent: #199e70; --accent-light: #12805a;
+  --s-blue: #2a78d6; --s-orange: #eb6834; --s-aqua: #1baf7a;           /* light-surface series */
+  --d-orange: #d95926; --d-aqua: #199e70; --d-gray: #4b5157;           /* dark-surface series */
+  --warn: #D4A72C;
+  --f-display: "Newsreader", Georgia, serif;
+  --f-text: "IBM Plex Sans", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; overflow-x: hidden; background: var(--ink); color: var(--text-hi); font: 16px/1.55 var(--f-text); -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-underline-offset: 3px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+@media (min-width: 720px) { .wrap { padding: 0 32px; } }
+
+/* top bar */
+.bar { position: sticky; top: 0; z-index: 10; background: rgba(15,17,19,.88); backdrop-filter: saturate(1.2) blur(6px); border-bottom: 1px solid var(--rule-dark); }
+.bar .wrap { display: flex; justify-content: space-between; align-items: center; height: 52px; gap: 16px; }
+.mark { font: 600 20px/1 var(--f-display); letter-spacing: -.01em; }
+.mark span { color: var(--accent); }
+.bar nav { display: flex; gap: 18px; font-size: 13px; color: var(--text-lo); overflow-x: auto; white-space: nowrap; }
+.bar nav a { text-decoration: none; }
+.bar nav a:hover { color: var(--text-hi); }
+
+/* sections */
+section { padding: 72px 0; border-bottom: 1px solid var(--rule-dark); }
+section.light { background: var(--paper); color: var(--text-ink); border-bottom: 0; }
+.eyebrow { font: 500 12px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-lo); margin: 0 0 16px; }
+.light .eyebrow { color: var(--text-ink-lo); }
+h1, h2 { font-family: var(--f-display); font-weight: 500; letter-spacing: -.015em; margin: 0; }
+h1 { font-size: clamp(2.1rem, 5.2vw, 3.9rem); line-height: 1.05; max-width: 17ch; }
+h2 { font-size: clamp(1.6rem, 3.4vw, 2.5rem); line-height: 1.12; max-width: 24ch; }
+.lede { color: var(--text-lo); max-width: 62ch; margin: 18px 0 0; font-size: 17px; }
+.light .lede { color: var(--text-ink-lo); }
+.num { font-family: var(--f-display); font-variant-numeric: lining-nums tabular-nums; }
+em.hl { font-style: normal; color: var(--accent); }
+.light em.hl { color: var(--accent-light); }
+
+/* hero tiles */
+.tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; margin-top: 48px; border-top: 1px solid var(--rule-dark); }
+@media (min-width: 820px) { .tiles { grid-template-columns: repeat(5, 1fr); } }
+.tile { padding: 20px 16px 20px 0; border-bottom: 1px solid var(--rule-dark); }
+.tile .v { font: 500 clamp(1.8rem, 3.6vw, 2.6rem)/1 var(--f-display); font-variant-numeric: lining-nums tabular-nums; }
+.tile .l { font-size: 13px; color: var(--text-lo); margin-top: 8px; }
+.tag { display: inline-block; font: 500 10px/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--warn); border: 1px solid rgba(212,167,44,.5); border-radius: 3px; padding: 3px 5px; margin-left: 6px; vertical-align: 2px; cursor: help; }
+
+/* grids */
+.grid2 { display: grid; gap: 40px; margin-top: 40px; }
+@media (min-width: 900px) { .grid2 { grid-template-columns: 1fr 1fr; } .grid2.wide-left { grid-template-columns: 1.35fr 1fr; } }
+.grid2 > * { min-width: 0; }
+.card-title { font: 600 14px/1.3 var(--f-text); margin: 0 0 4px; }
+.card-sub { font-size: 13px; color: var(--text-lo); margin: 0 0 12px; }
+.light .card-sub { color: var(--text-ink-lo); }
+.note { font-size: 13px; color: var(--text-lo); margin-top: 10px; max-width: 70ch; }
+.light .note { color: var(--text-ink-lo); }
+
+/* charts */
+.chart { width: 100%; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart text { font: 11px var(--f-mono); fill: var(--text-lo); }
+.light .chart text { fill: var(--text-ink-lo); }
+.chart .lbl { font: 500 12px var(--f-text); fill: var(--text-hi); }
+.light .chart .lbl { fill: var(--text-ink); }
+.grid-line { stroke: var(--rule-dark); stroke-width: 1; }
+.light .grid-line { stroke: var(--rule-light); }
+.tip { position: fixed; pointer-events: none; z-index: 50; background: var(--ink-3); color: var(--text-hi); border: 1px solid var(--rule-dark); border-radius: 6px; padding: 8px 10px; font: 12px/1.45 var(--f-mono); opacity: 0; transition: opacity .12s; max-width: 260px; }
+.tip b { font-family: var(--f-text); font-weight: 600; }
+
+/* tables */
+.tbl-wrap { overflow-x: auto; margin-top: 8px; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+th { text-align: right; font: 500 11px/1.3 var(--f-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--text-lo); padding: 8px 10px; border-bottom: 1px solid var(--rule-dark); white-space: nowrap; }
+td { text-align: right; padding: 9px 10px; border-bottom: 1px solid var(--rule-dark); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; padding-left: 0; }
+.light th { color: var(--text-ink-lo); border-color: var(--rule-light); }
+.light td { border-color: var(--rule-light); }
+.swatch { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 8px; vertical-align: 0; }
+
+/* floor model controls */
+.controls { display: grid; gap: 20px; margin-top: 32px; padding: 20px 0; border-top: 1px solid var(--rule-light); border-bottom: 1px solid var(--rule-light); }
+@media (min-width: 760px) { .controls { grid-template-columns: 1fr 1.4fr 1.4fr; } }
+.controls label { display: block; font: 500 11px/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--text-ink-lo); margin-bottom: 10px; }
+.controls select { width: 100%; font: 15px var(--f-text); padding: 8px 10px; border: 1px solid var(--rule-light); border-radius: 6px; background: #fff; color: var(--text-ink); }
+.controls input[type=range] { width: 100%; accent-color: var(--accent-light); }
+.controls output { font: 500 22px/1 var(--f-display); display: block; margin-top: 8px; }
+.readout { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; margin-top: 24px; }
+@media (min-width: 760px) { .readout { grid-template-columns: repeat(4, 1fr); } }
+.readout div { padding: 14px 16px 14px 0; border-bottom: 1px solid var(--rule-light); }
+.readout .v { font: 500 28px/1 var(--f-display); font-variant-numeric: tabular-nums; }
+.readout .l { font-size: 12px; color: var(--text-ink-lo); margin-top: 6px; }
+.pos { color: var(--accent-light); } .neg { color: #b8432f; }
+.verdict { margin-top: 20px; font: 400 20px/1.4 var(--f-display); max-width: 60ch; }
+
+/* A/B */
+.big-verdict { font: 500 clamp(2.6rem, 7vw, 5rem)/1 var(--f-display); letter-spacing: -.02em; margin: 24px 0 8px; }
+.caveats { margin: 24px 0 0; padding: 0; list-style: none; max-width: 72ch; }
+.caveats li { padding: 12px 0; border-top: 1px solid var(--rule-light); font-size: 14px; color: var(--text-ink-lo); }
+.caveats li b { color: var(--text-ink); font-weight: 600; }
+
+footer { padding: 56px 0 80px; color: var(--text-lo); font-size: 14px; }
+footer ul { padding-left: 18px; }
+footer li { margin: 6px 0; }
+
+/* motion: rise once on enter */
+.rise { opacity: 0; transform: translateY(12px); transition: opacity .6s ease, transform .6s ease; }
+.rise.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .rise { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <div class="mark">Slot<span>wise</span></div>
+    <nav>
+      <a href="#pnl">P&amp;L</a><a href="#auction">Auction</a><a href="#floor">Floor sizing</a><a href="#advertisers">Advertisers</a><a href="#ab">A/B test</a><a href="#limits">Limits</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section id="top">
+    <div class="wrap">
+      <p class="eyebrow rise">Ads analytics for a delivery marketplace · public ad data, not Swiggy data</p>
+      <h1 class="rise" id="hero-h1">Where ad revenue comes from, and what would grow it.</h1>
+      <p class="lede rise" id="hero-lede"></p>
+      <div class="tiles rise" id="tiles"></div>
+    </div>
+  </section>
+
+  <!-- P&L -->
+  <section id="pnl">
+    <div class="wrap">
+      <p class="eyebrow">01 · Recurring KPI report</p>
+      <h2 class="rise">How the ads business moved, day by day.</h2>
+      <p class="lede rise" id="pnl-lede"></p>
+      <div class="grid2">
+        <div class="rise">
+          <p class="card-title">Ad revenue per day</p>
+          <p class="card-sub">CNY · hatched days are lower bounds (iPinYou withheld part of the test set)</p>
+          <div class="chart" id="c-spend"></div>
+        </div>
+        <div class="rise">
+          <p class="card-title">CPM per day</p>
+          <p class="card-sub">CNY per 1,000 impressions · a ratio, so unaffected by the missing rows</p>
+          <div class="chart" id="c-cpm"></div>
+        </div>
+      </div>
+      <div class="rise" style="margin-top:48px">
+        <p class="card-title">By advertiser category</p>
+        <div class="tbl-wrap"><table id="t-adv"></table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUCTION -->
+  <section id="auction">
+    <div class="wrap">
+      <p class="eyebrow">02 · Auction health</p>
+      <h2 class="rise" id="auction-h2">Is the price set by competition or by the floor?</h2>
+      <p class="lede rise" id="auction-lede"></p>
+      <div class="grid2 wide-left">
+        <div class="rise">
+          <p class="card-title">Floor-binding rate by exchange</p>
+          <p class="card-sub">Among impressions with a floor: share where the price paid equalled the floor (no rival bid came close)</p>
+          <div class="chart" id="c-binding"></div>
+        </div>
+        <div class="rise">
+          <p class="card-title">Exchange summary</p>
+          <div class="tbl-wrap"><table id="t-auction"></table></div>
+          <p class="note">Win rate is a stand-in for fill rate: it is the bidder's share of auctions won, not the publisher's share of slots filled.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOOR SIZING (light) -->
+  <section id="floor" class="light">
+    <div class="wrap">
+      <p class="eyebrow">03 · Opportunity sizing · pricing change</p>
+      <h2 class="rise">What would a minimum floor price earn?</h2>
+      <p class="lede rise">New floor = the higher of today's floor and X. Impressions that paid less than X are at risk: some still sell at X, the rest are lost. Nobody knows that share yet, so the model shows the range and the break-even point. Pick a scenario.</p>
+      <div class="controls rise">
+        <div><label for="sel-ex">Exchange</label><select id="sel-ex"></select></div>
+        <div><label for="rng-x">Minimum floor X (fen per 1,000 imps)</label><input id="rng-x" type="range" min="0" max="150" step="10" value="30"><output id="out-x"></output></div>
+        <div><label for="rng-r">Share of at-risk impressions that still sell</label><input id="rng-r" type="range" min="0" max="100" step="5" value="50"><output id="out-r"></output></div>
+      </div>
+      <div class="readout rise" id="readout"></div>
+      <p class="verdict rise" id="floor-verdict"></p>
+      <div class="rise" style="margin-top:36px">
+        <p class="card-title">Revenue change vs today, by minimum floor</p>
+        <p class="card-sub">Three assumptions about the at-risk impressions · selected exchange</p>
+        <div class="chart" id="c-floor"></div>
+        <p class="note">Assumes bids don't change and ignores long-run effects (advertisers cutting budgets). That is why the recommendation is to A/B test a floor, which measures the "still sell" share directly. Model: docs/adr/0007.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADVERTISERS -->
+  <section id="advertisers">
+    <div class="wrap">
+      <p class="eyebrow">04 · Advertiser insights · Criteo, 675 campaigns, 31 days</p>
+      <h2 class="rise" id="adv-h2">Which advertisers to grow, and which to fix.</h2>
+      <p class="lede rise" id="adv-lede"></p>
+      <div class="grid2 wide-left">
+        <div class="rise">
+          <p class="card-title">Spend vs cost per conversion, one dot per campaign</p>
+          <p class="card-sub">Both axes log scale, split at the medians · cost is Criteo's transformed unit, compare campaigns only</p>
+          <div class="chart" id="c-scatter"></div>
+        </div>
+        <div class="rise">
+          <p class="card-title">The four groups</p>
+          <div class="tbl-wrap"><table id="t-seg"></table></div>
+          <p class="note">Spend retention = week-4 spend / week-1 spend for the same campaigns. Criteo's sample keeps almost every campaign active all month, so true churn can't be measured; shrinking spend is the early warning that's left.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- A/B (light) -->
+  <section id="ab" class="light">
+    <div class="wrap">
+      <p class="eyebrow">05 · A/B test readout · Criteo Uplift, randomised</p>
+      <h2 class="rise">Did showing ads make people convert more?</h2>
+      <p class="lede rise" id="ab-lede"></p>
+      <div class="grid2">
+        <div class="rise">
+          <p class="eyebrow" style="margin-top:24px">Pre-registered decision</p>
+          <div class="big-verdict" id="ab-verdict"></div>
+          <p class="note" id="ab-verdict-note"></p>
+        </div>
+        <div class="rise">
+          <p class="card-title" style="margin-top:24px">Relative lift with 95% confidence interval</p>
+          <p class="card-sub">Dot = estimate, bar = 95% CI, tick = smallest lift the test could detect (MDE)</p>
+          <div class="chart" id="c-ab"></div>
+        </div>
+      </div>
+      <ul class="caveats rise">
+        <li><b>Design written before the readout.</b> Primary metric, guardrail, alpha and decision rule were fixed in docs/EXPERIMENT.md first.</li>
+        <li id="cav-srm"></li>
+        <li><b>Pooled tests.</b> The data mixes several Criteo campaigns' tests; effects could differ inside each. Next step: confirm on a single-campaign holdout.</li>
+        <li id="cav-cace"></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer id="limits">
+    <div class="wrap">
+      <p class="eyebrow">Limits and sources</p>
+      <ul>
+        <li><b>Not Swiggy data.</b> Public datasets analysed the way a marketplace ads team would. No Swiggy users or numbers.</li>
+        <li><b>Fill rate and ROAS are not computable:</b> no unfilled ad requests and no order values in any public log. Win rate and CPA are shown instead, labelled as stand-ins.</li>
+        <li>iPinYou bids came from a fixed high-price strategy, so bids aren't real valuations; only prices paid are used for sizing.</li>
+        <li>iPinYou: RTB logs, season 3 (19–28 Oct 2013), RMB fen per 1,000 impressions; Zhang et al. 2014. Criteo Attribution and Criteo Uplift v2.1: Criteo AI Lab, CC BY-NC-SA 4.0.</li>
+        <li>Every number on this page is read from <code>data.js</code>, generated by the project's SQL; the same numbers feed the Excel model and the memo.</li>
+      </ul>
+      <p><a href="ads_kpi_model.xlsx">Download the Excel / Google Sheets model</a> · <a id="repo-link" href="https://github.com/Zakuroooo/ads-analytics">Code and docs on GitHub</a></p>
+    </div>
+  </footer>
+</main>
+
+<div class="tip" id="tip"></div>
+
+<script src="data.js"></script>
+<script>
+(function () {
+  const D = window.DASHBOARD_DATA;
+
+  // ---------- formatting ----------
+  const nf = (v, d = 0) => v == null ? "–" : v.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+  const compact = v => v == null ? "–" : Math.abs(v) >= 1e6 ? nf(v / 1e6, 2) + "M" : Math.abs(v) >= 1e3 ? nf(v / 1e3, 1) + "K" : nf(v, 0);
+  const pct = (v, d = 1) => v == null ? "–" : nf(v * 100, d) + "%";
+  const sgn = (v, d = 1) => v == null ? "–" : (v > 0 ? "+" : v < 0 ? "−" : "") + nf(Math.abs(v) * 100, d) + "%";
+  const exLabel = e => e === "ALL" ? "All exchanges" : e === "mobile/unknown" ? "Mobile / unknown" : "Exchange " + e;
+  const $ = id => document.getElementById(id);
+
+  // ---------- tooltip ----------
+  const tip = $("tip");
+  const showTip = (e, html) => { tip.innerHTML = html; tip.style.opacity = 1; moveTip(e); };
+  const moveTip = e => { const x = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8); tip.style.left = x + "px"; tip.style.top = (e.clientY + 14) + "px"; };
+  const hideTip = () => { tip.style.opacity = 0; };
+  const svgEl = (tag, attrs = {}, parent) => { const el = document.createElementNS("http://www.w3.org/2000/svg", tag); for (const k in attrs) el.setAttribute(k, attrs[k]); if (parent) parent.appendChild(el); return el; };
+  const hover = (el, html) => { el.addEventListener("mousemove", e => showTip(e, html)); el.addEventListener("mouseleave", hideTip); el.style.cursor = "default"; };
+  // round axis steps to 1, 2, 2.5 or 5 × 10^n so ticks land on readable values
+  function niceTicks(lo, hi, target = 5) {
+    const raw = (hi - lo) / target, mag = 10 ** Math.floor(Math.log10(raw));
+    const step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(st => st >= raw);
+    const start = Math.floor(lo / step) * step, ticks = [];
+    for (let v = start; v <= hi + step * 0.999; v += step) ticks.push(+v.toFixed(10));
+    return ticks;
+  }
+
+  // ---------- hero ----------
+  const k = D.kpi;
+  const all = D.auction.find(a => a.exchange === "ALL");
+  $("hero-lede").innerHTML = `Ten days of real-time-bidding logs (${nf(k.bids)} bids, ${compact(k.impressions)} impressions), 675 advertiser campaigns and a randomised test on ${compact(D.ab.users)} users. The headline: the floor price set the price on <em class="hl">${pct(all.floor_binding, 0)}</em> of floored auctions, and a group of large advertisers pays <em class="hl">${nf(+D.segments.FIX.cpa / +D.segments.PROTECT.cpa, 1)}×</em> more per conversion than its peers.`;
+  const tiles = [
+    [nf(k.spend_cny, 0), "Ad revenue, CNY"],
+    [compact(k.impressions), "Impressions"],
+    [nf(k.cpm_cny, 2), "CPM, CNY per 1,000"],
+    [pct(k.ctr, 3), "Click-through rate"],
+    [pct(k.win_rate, 0), 'Win rate <span class="tag" title="Stand-in for fill rate: bidder\'s share of auctions won. Fill rate needs unfilled requests, which no public log has.">stand-in</span>'],
+  ];
+  $("tiles").innerHTML = tiles.map(([v, l]) => `<div class="tile"><div class="v">${v}</div><div class="l">${l}</div></div>`).join("");
+
+  // ---------- generic bar + line ----------
+  const widthOf = (el, min = 320) => Math.max(min, Math.round(el.clientWidth || 520));
+  function barChart(el, rows, { value, label, fmt, color, hatchFrom, tipHtml }) {
+    const W = widthOf(el), H = 230, m = { t: 12, r: 8, b: 26, l: 44 };
+    const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, role: "img" });
+    const defs = svgEl("defs", {}, svg);
+    const pat = svgEl("pattern", { id: el.id + "-h", width: 6, height: 6, patternUnits: "userSpaceOnUse", patternTransform: "rotate(45)" }, defs);
+    svgEl("rect", { width: 6, height: 6, fill: color }, pat);
+    svgEl("line", { x1: 0, y1: 0, x2: 0, y2: 6, stroke: "#0F1113", "stroke-width": 2.2 }, pat);
+    const ticks = niceTicks(0, Math.max(...rows.map(value)), 4), max = ticks[ticks.length - 1];
+    const iw = W - m.l - m.r, ih = H - m.t - m.b, bw = iw / rows.length;
+    ticks.forEach(v => {
+      const y = m.t + ih - ih * v / max;
+      svgEl("line", { x1: m.l, x2: W - m.r, y1: y, y2: y, class: "grid-line" }, svg);
+      svgEl("text", { x: m.l - 8, y: y + 4, "text-anchor": "end" }, svg).textContent = fmt(v);
+    });
+    rows.forEach((r, i) => {
+      const h = ih * value(r) / max, x = m.l + i * bw + 1, y = m.t + ih - h;
+      const w = bw - 2, rad = Math.min(4, w / 2);
+      const d = `M${x},${m.t + ih} V${y + rad} Q${x},${y} ${x + rad},${y} H${x + w - rad} Q${x + w},${y} ${x + w},${y + rad} V${m.t + ih} Z`;
+      const p = svgEl("path", { d, fill: hatchFrom && r.day >= hatchFrom ? `url(#${el.id}-h)` : color }, svg);
+      svgEl("text", { x: x + w / 2, y: H - 8, "text-anchor": "middle" }, svg).textContent = label(r);
+      const hit = svgEl("rect", { x: m.l + i * bw, y: m.t, width: bw, height: ih, fill: "transparent" }, svg);
+      hover(hit, tipHtml(r));
+    });
+    el.appendChild(svg);
+  }
+
+  function lineChart(el, rows, { value, label, fmt, color, yMin, tipHtml }) {
+    const W = widthOf(el), H = 230, m = { t: 12, r: 8, b: 26, l: 44 };
+    const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, role: "img" });
+    const vals = rows.map(value), ticks = niceTicks(yMin ?? Math.min(...vals), Math.max(...vals), 4);
+    const lo = ticks[0], hi = ticks[ticks.length - 1];
+    const iw = W - m.l - m.r, ih = H - m.t - m.b, step = iw / rows.length;
+    const X = i => m.l + step * (i + 0.5), Y = v => m.t + ih - ih * (v - lo) / (hi - lo);
+    ticks.forEach(v => {
+      const y = Y(v);
+      svgEl("line", { x1: m.l, x2: W - m.r, y1: y, y2: y, class: "grid-line" }, svg);
+      svgEl("text", { x: m.l - 8, y: y + 4, "text-anchor": "end" }, svg).textContent = fmt(v);
+    });
+    svgEl("path", { d: rows.map((r, i) => (i ? "L" : "M") + X(i) + "," + Y(value(r))).join(" "), fill: "none", stroke: color, "stroke-width": 2, "stroke-linejoin": "round" }, svg);
+    rows.forEach((r, i) => {
+      svgEl("circle", { cx: X(i), cy: Y(value(r)), r: 4, fill: color, stroke: "#0F1113", "stroke-width": 2 }, svg);
+      svgEl("text", { x: X(i), y: H - 8, "text-anchor": "middle" }, svg).textContent = label(r);
+      hover(svgEl("rect", { x: m.l + i * step, y: m.t, width: step, height: ih, fill: "transparent" }, svg), tipHtml(r));
+    });
+    el.appendChild(svg);
+  }
+
+  // ---------- 01 P&L ----------
+  const daily = D.daily.filter(d => d.spend != null);
+  const peak = daily.reduce((a, b) => b.spend > a.spend ? b : a);
+  const cpms = daily.map(d => d.cpm);
+  $("pnl-lede").textContent = `Revenue peaked on ${peak.day.slice(5)} at ${nf(peak.spend, 0)} CNY, when the most campaigns were live. CPM stayed in a narrow band (${nf(Math.min(...cpms), 2)}–${nf(Math.max(...cpms), 2)} CNY), so revenue moved with volume, not price.`;
+  const dayLbl = d => d.day.slice(8);
+  barChart($("c-spend"), daily, { value: d => d.spend, label: dayLbl, fmt: v => compact(v), color: "var(--d-aqua)", hatchFrom: "2013-10-21",
+    tipHtml: d => `<b>${d.day}</b><br>Revenue ${nf(d.spend, 2)} CNY<br>Impressions ${compact(d.impressions)}<br>Win rate ${pct(d.win_rate)}` });
+  lineChart($("c-cpm"), daily, { value: d => d.cpm, label: dayLbl, fmt: v => nf(v, 2), color: "var(--d-aqua)", yMin: 0,
+    tipHtml: d => `<b>${d.day}</b><br>CPM ${nf(d.cpm, 3)} CNY<br>CTR ${pct(d.ctr, 3)}` });
+  $("t-adv").innerHTML = `<tr><th>Category</th><th>Revenue</th><th>Share</th><th>CPM</th><th>CTR</th><th>Win rate</th></tr>` +
+    D.advertisers.map(a => `<tr><td>${a.category} <span style="color:var(--text-lo)">#${a.id}</span></td><td>${nf(a.spend, 0)}</td><td>${pct(a.share)}</td><td>${nf(a.cpm, 2)}</td><td>${pct(a.ctr, 3)}</td><td>${pct(a.win_rate)}</td></tr>`).join("");
+
+  // ---------- 02 auction ----------
+  const ex = D.auction.filter(a => a.exchange !== "ALL");
+  const noFloor = ex.find(a => a.share_with_floor === 0);
+  $("auction-lede").innerHTML = `Where a floor exists, it set the price on <em class="hl">${pct(all.floor_binding, 0)}</em> of impressions. ${noFloor ? `${exLabel(noFloor.exchange)} sells ${pct(noFloor.impressions / all.impressions, 0)} of all impressions with <em class="hl">no floor at all</em>.` : ""} Thin competition plus missing floors is where pricing has room.`;
+  (function () {
+    const el = $("c-binding"), rows = ex.slice().sort((a, b) => (b.floor_binding ?? -1) - (a.floor_binding ?? -1));
+    const W = widthOf(el), rowH = 40, m = { l: 132, r: 56, t: 6 }, H = m.t + rows.length * rowH;
+    const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, role: "img" });
+    const iw = W - m.l - m.r;
+    rows.forEach((r, i) => {
+      const y = m.t + i * rowH;
+      svgEl("text", { x: 0, y: y + 22, class: "lbl" }, svg).textContent = exLabel(r.exchange);
+      svgEl("line", { x1: m.l, x2: m.l + iw, y1: y + 18, y2: y + 18, class: "grid-line" }, svg);
+      if (r.share_with_floor === 0) {
+        svgEl("text", { x: m.l, y: y + 22, fill: "var(--warn)", style: "fill:var(--warn)" }, svg).textContent = "no floors set";
+      } else {
+        const w = Math.max(2, iw * r.floor_binding);
+        svgEl("rect", { x: m.l, y: y + 10, width: w, height: 16, rx: 4, fill: "var(--d-aqua)" }, svg);
+        svgEl("text", { x: m.l + w + 8, y: y + 22 }, svg).textContent = pct(r.floor_binding, 0);
+      }
+      hover(svgEl("rect", { x: 0, y, width: W, height: rowH, fill: "transparent" }, svg),
+        `<b>${exLabel(r.exchange)}</b><br>Impressions ${compact(r.impressions)}<br>With a floor ${pct(r.share_with_floor, 0)}<br>Floor binding ${r.floor_binding == null ? "–" : pct(r.floor_binding)}<br>CPM ${nf(r.cpm, 2)} CNY`);
+    });
+    el.appendChild(svg);
+  })();
+  $("t-auction").innerHTML = `<tr><th>Exchange</th><th>Imps</th><th>CPM</th><th>Has floor</th><th>Win rate</th></tr>` +
+    ex.map(a => `<tr><td>${exLabel(a.exchange)}</td><td>${compact(a.impressions)}</td><td>${nf(a.cpm, 2)}</td><td>${pct(a.share_with_floor, 0)}</td><td>${pct(a.win_rate, 0)}</td></tr>`).join("");
+
+  // ---------- 03 floor model ----------
+  const exchanges = [...new Set(D.floor.map(r => r.exchange))];
+  $("sel-ex").innerHTML = exchanges.map(e => `<option value="${e}">${exLabel(e)}</option>`).join("");
+  const rev = (row, r) => row.lower + r * row.x * row.can_sell / 100000;
+  function drawFloor() {
+    const e = $("sel-ex").value, X = +$("rng-x").value, r = +$("rng-r").value / 100;
+    $("out-x").textContent = X + " fen";
+    $("out-r").textContent = (r * 100).toFixed(0) + "%";
+    const rows = D.floor.filter(f => f.exchange === e).sort((a, b) => a.x - b.x);
+    const row = rows.find(f => f.x === X);
+    const newRev = rev(row, r), change = newRev / row.now - 1;
+    $("readout").innerHTML = [
+      [nf(row.now, 0), "Revenue today, CNY"],
+      [pct(row.at_risk_share, 1), "Impressions at risk (paid < X)"],
+      [`<span class="${change >= 0 ? "pos" : "neg"}">${sgn(change)}</span>`, "Revenue change at your scenario"],
+      [row.breakeven == null ? "–" : pct(row.breakeven, 0), "Break-even: share that must still sell"],
+    ].map(([v, l]) => `<div><div class="v">${v}</div><div class="l">${l}</div></div>`).join("");
+    $("floor-verdict").innerHTML = X === 0 ? "Pick a minimum floor above 0 to size a change."
+      : `A minimum floor of ${X} fen puts ${pct(row.at_risk_share, 0)} of ${e === "ALL" ? "all" : exLabel(e) + "'s"} impressions at risk. It only pays off if at least <b>${pct(row.breakeven, 0)}</b> of them still sell at the new price. At your ${(r * 100).toFixed(0)}% assumption revenue would ${change >= 0 ? "rise" : "fall"} ${sgn(Math.abs(change)).replace("+", "")}.`;
+
+    // chart: change vs X for r = 0, 0.5, 1 (direct-labelled; light surface palette)
+    const el = $("c-floor"); el.innerHTML = "";
+    const W = widthOf(el), H = 310, m = { t: 14, r: W < 600 ? 104 : 120, b: 44, l: 50 };
+    const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, role: "img" });
+    const series = [[1, "var(--s-blue)", "all still sell"], [0.5, "var(--s-aqua)", "half still sell"], [0, "var(--s-orange)", "none still sell"]];
+    const ys = rows.flatMap(f => series.map(([rr]) => rev(f, rr) / f.now - 1));
+    const ticks = niceTicks(Math.min(...ys, 0), Math.max(...ys, 0.01), 5), lo = ticks[0], hi = ticks[ticks.length - 1];
+    const iw = W - m.l - m.r, ih = H - m.t - m.b;
+    const Xs = x => m.l + iw * x / 150, Ys = v => m.t + ih - ih * (v - lo) / (hi - lo);
+    ticks.forEach(v => {
+      svgEl("line", { x1: m.l, x2: W - m.r, y1: Ys(v), y2: Ys(v), class: "grid-line" }, svg);
+      svgEl("text", { x: m.l - 8, y: Ys(v) + 4, "text-anchor": "end" }, svg).textContent = sgn(v, 0);
+    });
+    svgEl("line", { x1: m.l, x2: W - m.r, y1: Ys(0), y2: Ys(0), stroke: "#121416", "stroke-width": 1 }, svg);
+    rows.forEach(f => { if (W >= 600 || f.x % 30 === 0) svgEl("text", { x: Xs(f.x), y: m.t + ih + 18, "text-anchor": "middle" }, svg).textContent = f.x; });
+    svgEl("text", { x: m.l + iw / 2, y: H - 0, "text-anchor": "middle" }, svg).textContent = "minimum floor X, fen per 1,000 impressions";
+    svgEl("line", { x1: Xs(X), x2: Xs(X), y1: m.t, y2: m.t + ih, stroke: "#121416", "stroke-opacity": .25, "stroke-width": 1 }, svg);
+    series.forEach(([rr, color, name]) => {
+      const pts = rows.map(f => [Xs(f.x), Ys(rev(f, rr) / f.now - 1)]);
+      svgEl("path", { d: pts.map((p, i) => (i ? "L" : "M") + p.join(",")).join(" "), fill: "none", stroke: color, "stroke-width": 2 }, svg);
+      const last = pts[pts.length - 1];
+      svgEl("circle", { cx: last[0], cy: last[1], r: 4, fill: color, stroke: "#F4F1EA", "stroke-width": 2 }, svg);
+      svgEl("text", { x: last[0] + 10, y: last[1] + 4, class: "lbl" }, svg).textContent = name;
+    });
+    rows.forEach(f => {
+      hover(svgEl("rect", { x: Xs(f.x) - iw / 32, y: m.t, width: iw / 16, height: ih, fill: "transparent" }, svg),
+        `<b>Minimum floor ${f.x} fen</b><br>At risk ${pct(f.at_risk_share)}<br>All sell ${sgn(rev(f, 1) / f.now - 1)}<br>Half sell ${sgn(rev(f, .5) / f.now - 1)}<br>None sell ${sgn(rev(f, 0) / f.now - 1)}<br>Break-even ${f.breakeven == null ? "–" : pct(f.breakeven, 0)}`);
+    });
+    el.appendChild(svg);
+  }
+  ["sel-ex", "rng-x", "rng-r"].forEach(id => $(id).addEventListener("input", drawFloor));
+  drawFloor();
+
+  // ---------- 04 advertisers ----------
+  const S = D.segments;
+  $("adv-lede").innerHTML = `The top 20% of campaigns hold <em class="hl">${pct(D.concentration.top20pct_spend_share, 0)}</em> of spend. The "fix" group is ${pct(+S.FIX.spend_share, 0)} of spend but pays <em class="hl">${nf(+S.FIX.cpa / +S.PROTECT.cpa, 1)}×</em> as much per conversion as the "protect" group, and its spend is already shrinking (week 4 = ${pct(+S.FIX.spend_retention_w4_vs_w1, 0)} of week 1). Meanwhile the "grow" group converts cheapest of all on just ${pct(+S.GROW.spend_share, 0)} of spend.`;
+  (function () {
+    const el = $("c-scatter"), C = D.campaigns.filter(c => c.spend > 0 && c.cpa > 0);
+    const W = widthOf(el), H = Math.min(420, Math.max(320, W * 0.75)), m = { t: 10, r: 10, b: 36, l: 56 };
+    const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, role: "img" });
+    const lx = C.map(c => Math.log10(c.spend)), ly = C.map(c => Math.log10(c.cpa));
+    const x0 = Math.floor(Math.min(...lx)), x1 = Math.ceil(Math.max(...lx)), y0 = Math.floor(Math.min(...ly)), y1 = Math.ceil(Math.max(...ly));
+    const iw = W - m.l - m.r, ih = H - m.t - m.b;
+    const X = v => m.l + iw * (Math.log10(v) - x0) / (x1 - x0), Y = v => m.t + ih - ih * (Math.log10(v) - y0) / (y1 - y0);
+    for (let p = x0; p <= x1; p++) { svgEl("line", { x1: X(10 ** p), x2: X(10 ** p), y1: m.t, y2: m.t + ih, class: "grid-line" }, svg); if (W < 480 && (p - x0) % 2) continue; svgEl("text", { x: X(10 ** p), y: H - 16, "text-anchor": "middle" }, svg).textContent = 10 ** p >= 1 ? nf(10 ** p) : (10 ** p).toString(); }
+    for (let p = y0; p <= y1; p++) { svgEl("line", { x1: m.l, x2: m.l + iw, y1: Y(10 ** p), y2: Y(10 ** p), class: "grid-line" }, svg); svgEl("text", { x: m.l - 8, y: Y(10 ** p) + 4, "text-anchor": "end" }, svg).textContent = (10 ** p).toPrecision(1); }
+    svgEl("text", { x: m.l + iw / 2, y: H, "text-anchor": "middle" }, svg).textContent = "campaign spend (log)";
+    svgEl("text", { x: 12, y: m.t + ih / 2, "text-anchor": "middle", transform: `rotate(-90 12 ${m.t + ih / 2})` }, svg).textContent = "cost per conversion (log)";
+    const med = arr => { const s = arr.slice().sort((a, b) => a - b), h = s.length / 2; return s.length % 2 ? s[h | 0] : (s[h - 1] + s[h]) / 2; };
+    const ms = med(D.campaigns.map(c => c.spend)), mc = med(D.campaigns.map(c => c.cpa));
+    svgEl("line", { x1: X(ms), x2: X(ms), y1: m.t, y2: m.t + ih, stroke: "#9AA0A6", "stroke-opacity": .5 }, svg);
+    svgEl("line", { x1: m.l, x2: m.l + iw, y1: Y(mc), y2: Y(mc), stroke: "#9AA0A6", "stroke-opacity": .5 }, svg);
+    const color = { FIX: "var(--d-orange)", GROW: "var(--d-aqua)", PROTECT: "var(--d-gray)", WATCH: "var(--d-gray)" };
+    C.sort((a, b) => (a.segment === "FIX" || a.segment === "GROW") - (b.segment === "FIX" || b.segment === "GROW"));
+    C.forEach(c => {
+      const dot = svgEl("circle", { cx: X(c.spend), cy: Y(c.cpa), r: 4, fill: color[c.segment], stroke: "#0F1113", "stroke-width": 1.5, "fill-opacity": c.segment === "FIX" || c.segment === "GROW" ? .95 : .7 }, svg);
+      hover(dot, `<b>Campaign ${c.id}</b><br>${c.segment}<br>Spend ${nf(c.spend, 2)}<br>CPA ${c.cpa.toPrecision(3)}<br>Spend wk4/wk1 ${c.retention == null ? "–" : nf(c.retention, 2)}`);
+    });
+    const corner = (txt, x, y, anchor, fill) => svgEl("text", { x, y, "text-anchor": anchor, class: "lbl", style: fill ? `fill:${fill}` : "" }, svg).textContent = txt;
+    corner("FIX", m.l + iw - 6, m.t + 16, "end", "var(--d-orange)");
+    corner("WATCH", m.l + 6, m.t + 16, "start");
+    corner("PROTECT", m.l + iw - 6, m.t + ih - 8, "end");
+    corner("GROW", m.l + 6, m.t + ih - 8, "start", "var(--d-aqua)");
+    el.appendChild(svg);
+  })();
+  const segColor = { PROTECT: "var(--d-gray)", FIX: "var(--d-orange)", GROW: "var(--d-aqua)", WATCH: "var(--d-gray)" };
+  const action = { PROTECT: "keep, upsell", FIX: "cut their CPA first", GROW: "pitch more budget", WATCH: "low priority" };
+  $("t-seg").innerHTML = `<tr><th>Group</th><th>Campaigns</th><th>Spend</th><th>CPA</th><th>Wk4/Wk1</th></tr>` +
+    ["PROTECT", "FIX", "GROW", "WATCH"].map(s => { const r = S[s]; return `<tr><td><span class="swatch" style="background:${segColor[s]}"></span>${s}<br><span style="color:var(--text-lo);font-size:12px">${action[s]}</span></td><td>${r.campaigns}</td><td>${pct(+r.spend_share, 0)}</td><td>${(+r.cpa).toPrecision(2)}</td><td>${pct(+r.spend_retention_w4_vs_w1, 0)}</td></tr>`; }).join("");
+
+  // ---------- 05 A/B ----------
+  const A = D.ab, cv = A.conversion, vi = A.visit;
+  $("ab-lede").innerHTML = `${compact(A.users)} users were randomly split, 85% eligible to see ads and 15% held out. Conversion rose from ${pct(cv.rate_control, 3)} to ${pct(cv.rate_treatment, 3)}: <em class="hl">${sgn(cv.rel_lift, 0)}</em> relative (95% CI ${sgn(cv.rel_ci95[0], 0)} to ${sgn(cv.rel_ci95[1], 0)}). Visits rose ${sgn(vi.rel_lift, 0)}, so the guardrail held.`;
+  $("ab-verdict").textContent = A.decision === "ship" ? "Ship." : A.decision.charAt(0).toUpperCase() + A.decision.slice(1) + ".";
+  $("ab-verdict-note").textContent = `The rule: ship if the conversion lift's 95% CI is above zero and visits don't fall. Lower bound ${sgn(cv.rel_ci95[0], 0)}; the smallest lift this test could reliably detect was ${sgn(A.mde_conversion_rel, 1)}.`;
+  $("cav-srm").innerHTML = `<b>Sample ratio checked.</b> Treatment share ${pct(A.treatment_share, 4)} vs 85% intended (p = ${nf(A.srm_p, 2)}). Criteo built the file at exactly 85%, so this check passes almost by design.`;
+  $("cav-cace").innerHTML = `<b>Effect on exposed users not used.</b> Only ${pct(A.exposure_rate, 1)} of treatment users saw an ad, and dividing the lift by that gives an implausibly large effect. An independent re-check of the statistics flagged this; the decision rests on the randomised comparison only.`;
+  (function () {
+    const el = $("c-ab"), rows = [["Conversion", cv, A.mde_conversion_rel], ["Visit", vi, A.mde_visit_rel]];
+    const W = widthOf(el), H = 170, m = { l: 96, r: 48, t: 20, b: 34 };
+    const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, role: "img" });
+    const abTicks = niceTicks(0, Math.max(...rows.map(r => r[1].rel_ci95[1])) * 1.12, 4), hi = abTicks[abTicks.length - 1], iw = W - m.l - m.r;
+    const X = v => m.l + iw * v / hi;
+    for (const v of abTicks) { svgEl("line", { x1: X(v), x2: X(v), y1: m.t - 6, y2: H - m.b, class: "grid-line" }, svg); svgEl("text", { x: X(v), y: H - 14, "text-anchor": "middle" }, svg).textContent = sgn(v, 0); }
+    svgEl("line", { x1: X(0), x2: X(0), y1: m.t - 6, y2: H - m.b, stroke: "#121416" }, svg);
+    rows.forEach(([name, s, mde], i) => {
+      const y = m.t + 18 + i * 52;
+      svgEl("text", { x: 0, y: y + 4, class: "lbl" }, svg).textContent = name;
+      svgEl("line", { x1: X(s.rel_ci95[0]), x2: X(s.rel_ci95[1]), y1: y, y2: y, stroke: "var(--s-blue)", "stroke-width": 6, "stroke-linecap": "round", "stroke-opacity": .35 }, svg);
+      svgEl("circle", { cx: X(s.rel_lift), cy: y, r: 6, fill: "var(--s-blue)", stroke: "#F4F1EA", "stroke-width": 2 }, svg);
+      svgEl("line", { x1: X(mde), x2: X(mde), y1: y - 10, y2: y + 10, stroke: "#121416", "stroke-width": 1.5 }, svg);
+      svgEl("text", { x: X(s.rel_ci95[1]) + 10, y: y + 4, class: "lbl" }, svg).textContent = sgn(s.rel_lift, 0);
+      hover(svgEl("rect", { x: 0, y: y - 20, width: W, height: 40, fill: "transparent" }, svg),
+        `<b>${name}</b><br>Control ${pct(s.rate_control, 3)} → treatment ${pct(s.rate_treatment, 3)}<br>Lift ${sgn(s.rel_lift)} (CI ${sgn(s.rel_ci95[0])} to ${sgn(s.rel_ci95[1])})<br>MDE ${sgn(mde)}`);
+    });
+    el.appendChild(svg);
+  })();
+
+  let lastW = innerWidth;
+  addEventListener("resize", () => { if (Math.abs(innerWidth - lastW) > 120) location.reload(); });
+
+  // ---------- motion ----------
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: 0.12 });
+  document.querySelectorAll(".rise").forEach(n => io.observe(n));
+})();
+</script>
+</body>
+</html>
