@@ -50,6 +50,8 @@ def main():
                   "cpm": "CNY per 1,000 impressions"},
         "ipinyou_kpi": kpi_overall(con),
         "ipinyou_advertisers": read_csv("kpi_advertiser"),
+        "auction": {r["exchange"]: r for r in read_csv("auction_health") if r["slot_visibility"] == "ALL"},
+        "floor_sizing_all": [r for r in read_csv("floor_sizing") if r["exchange"] == "ALL"],
     }
     ab = OUT / "ab_readout.json"
     if ab.exists():

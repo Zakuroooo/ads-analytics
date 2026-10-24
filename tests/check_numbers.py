@@ -53,6 +53,27 @@ check("S3", "CPM = spend*1000/imps", close(k["cpm_cny"], k["spend_cny"] * 1000 /
 check("S3", "CTR = clicks/imps", close(k["ctr"], k["clicks"] / k["impressions"], 1e-9))
 check("S3", "win rate = won/bids", close(k["win_rate"], k["bids_won"] / k["bids"], 1e-9))
 
+# Auction totals tie to the KPI layer (two different queries)
+auc = n["auction"]["ALL"]
+check("S2", "auction-health impressions = KPI impressions", close(auc["impressions"], k["impressions"]))
+check("S2", "auction-health spend = KPI spend", abs(float(auc["spend_cny"]) - k["spend_cny"]) <= 0.01)
+
+# M1: floor sizing at minimum floor 0 reproduces actual revenue, for every exchange
+sizing = rows("floor_sizing")
+zero = [r for r in sizing if r["min_floor_fen_cpm"] == "0"]
+check("M1", "sizing at X=0: lower = upper = actual (all exchanges)",
+      all(r["revenue_lower_cny"] == r["revenue_upper_cny"] == r["revenue_now_cny"] for r in zero),
+      f"{len(zero)} rows")
+check("M1", "sizing actual revenue = KPI spend",
+      abs(float(next(r for r in zero if r["exchange"] == "ALL")["revenue_now_cny"]) - k["spend_cny"]) <= 0.01)
+
+# M2: as the minimum floor rises, impressions at risk never fall and the lower bound never rises
+for ex in sorted({r["exchange"] for r in sizing}):
+    s = [r for r in sizing if r["exchange"] == ex]
+    risk = [int(r["at_risk_imps"]) for r in s]
+    low = [float(r["revenue_lower_cny"]) for r in s]
+    check("M2", f"sizing monotonic ({ex})", risk == sorted(risk) and low == sorted(low, reverse=True))
+
 # M3: A/B maths matches statsmodels
 if "ab" in n:
     for m in ("primary_conversion", "secondary_visit"):

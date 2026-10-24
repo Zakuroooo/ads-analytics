@@ -15,7 +15,7 @@
 | **CPC** | spend / clicks | cost units | both | NULL if clicks = 0 |
 | **CPA** *(stand-in for ROAS)* | spend / conversions | cost units | both | NULL if conversions = 0; shown as "no conversions" |
 | **Advertiser count** | distinct advertisers (iPinYou) or campaigns (Criteo) with spend > 0 in the period | count | both | Criteo campaign = advertiser proxy |
-| **Floor binding rate** | share of imps where paid ≤ floor × 1.05 | % | iPinYou | 5% band because of price rounding ⏳ (check distribution) |
+| **Floor binding rate** | among imps with floor > 0: share where paid ≤ floor | % | iPinYou | prices are integers, so no rounding band needed; 0.4% paid below floor (data quirk, counted) |
 | **Bid-to-pay ratio** | bid / paid, median | ratio | iPinYou | paid = 0 rows excluded and counted |
 | **Spend share (top x%)** | spend of top x% campaigns / total spend | % | Criteo Attr. | campaigns ranked by spend |
 | **Weekly retention** | campaigns active in week w that were also active in their first week / campaigns in cohort | % | Criteo Attr. | active = spend > 0 that week |

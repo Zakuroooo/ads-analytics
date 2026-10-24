@@ -11,7 +11,8 @@ status is `Proposed`, `Accepted` or `Superseded by NNNN`.
 | [0001](0001-duckdb-parquet-over-pandas.md) | DuckDB SQL over Parquet, not pandas or a database server | Accepted |
 | [0002](0002-datasets.md) | iPinYou + Criteo Attribution + Criteo Uplift, not synthetic or Avazu | Accepted |
 | [0003](0003-static-dashboard-over-bi-tool.md) | Static HTML dashboard, not Tableau/Power BI/Streamlit | Accepted |
-| [0004](0004-floor-sizing-assumptions.md) | Floor sizing: bids fixed, lost impressions unsold | Accepted |
+| [0004](0004-floor-sizing-assumptions.md) | Floor sizing: bids fixed, lost impressions unsold | Superseded by 0007 |
+| [0007](0007-floor-sizing-minimum-floor-break-even.md) | Floor sizing: minimum floor, range + break-even retention | Accepted |
 | [0005](0005-honest-stand-ins.md) | Win rate and CPA as labelled stand-ins for fill rate and ROAS | Accepted |
 | [0006](0006-numbers-json-single-source.md) | All numbers flow from one `numbers.json` | Accepted |
 

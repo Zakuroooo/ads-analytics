@@ -1,5 +1,5 @@
 # 0004 — Floor sizing: bids stay fixed, lost impressions stay unsold
-Status: Accepted · Date: 2026-10-24
+Status: Superseded by [0007](0007-floor-sizing-minimum-floor-break-even.md) · Date: 2026-10-24
 
 ## Context
 I want to size "what if we raise floor (reserve) prices by k×?". The log shows, for each won impression, the floor f, iPinYou's bid b and the price paid p. It does not show other bidders' bids, or how bidders would react.
