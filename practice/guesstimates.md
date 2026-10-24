@@ -35,9 +35,11 @@ Hinglish tip: *Pehle formula bolo, phir numbers. Numbers galat ho sakte hain, fo
 | CTR on a sponsored slot | 2% | higher than display ads because users are already hungry and browsing |
 | Clicks | 0.96 million | 48M × 2% |
 | Cost per click | ₹5 (assumption) | small restaurant budgets |
-| **Revenue** | **≈ ₹4.8 crore per month** | 0.96M × ₹5 |
+| **Revenue** | **≈ ₹48 lakh per month** | 0.96M × ₹5 = ₹4.8M = ₹48 lakh |
 
-**Sanity check:** per ordering user that's about ₹24 a month of ad revenue. If an average order earns the platform much more than that in commission, ads are a meaningful but not dominant line. That feels plausible.
+**Sanity check:** per ordering user that's about ₹2.4 a month (₹48 lakh ÷ 2M users). That's small next to the commission on even one order, so either sponsored listings are a minor line, or my CTR/CPC/slots assumptions are low. Say that out loud: the sanity check is where you question your own inputs.
+
+**Unit trap (I made this mistake while writing this drill):** 1 million = 10 lakh, 1 crore = 10 million. ₹4.8 million is ₹48 lakh, not ₹4.8 crore. Convert slowly and say the units.
 
 **What moves it most:** CTR and cost per click. Say: "If CTR is 1% instead of 2%, revenue halves, so I'd check CTR first in the real data."
 
