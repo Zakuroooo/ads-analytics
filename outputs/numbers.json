@@ -384,5 +384,78 @@
       "upper_change": "0.8073",
       "breakeven_retention": "0.3641"
     }
-  ]
+  ],
+  "criteo_overall": {
+    "impressions": 16468027,
+    "campaigns": 675,
+    "spend": 4829.340540910069,
+    "clicks": 5947563,
+    "conversions": 442424
+  },
+  "criteo_concentration": {
+    "top20pct_spend_share": 0.7307,
+    "top10pct_spend_share": 0.5858
+  },
+  "segments": {
+    "PROTECT": {
+      "segment": "PROTECT",
+      "campaigns": "143",
+      "spend": "2332.36",
+      "spend_share": "0.483",
+      "conversions": "332804",
+      "ctr": "0.392451",
+      "cvr": "0.0998",
+      "cpa": "0.007008",
+      "spend_retention_w4_vs_w1": "1.0662",
+      "campaigns_spend_halved": "11"
+    },
+    "FIX": {
+      "segment": "FIX",
+      "campaigns": "195",
+      "spend": "2111.91",
+      "spend_share": "0.4373",
+      "conversions": "63596",
+      "ctr": "0.328329",
+      "cvr": "0.0332",
+      "cpa": "0.033208",
+      "spend_retention_w4_vs_w1": "0.9727",
+      "campaigns_spend_halved": "21"
+    },
+    "GROW": {
+      "segment": "GROW",
+      "campaigns": "195",
+      "spend": "195.99",
+      "spend_share": "0.0406",
+      "conversions": "40657",
+      "ctr": "0.342301",
+      "cvr": "0.0935",
+      "cpa": "0.00482",
+      "spend_retention_w4_vs_w1": "0.983",
+      "campaigns_spend_halved": "24"
+    },
+    "WATCH": {
+      "segment": "WATCH",
+      "campaigns": "142",
+      "spend": "189.08",
+      "spend_share": "0.0392",
+      "conversions": "5367",
+      "ctr": "0.302948",
+      "cvr": "0.0205",
+      "cpa": "0.035231",
+      "spend_retention_w4_vs_w1": "0.9422",
+      "campaigns_spend_halved": "22"
+    },
+    "ALL": {
+      "segment": "ALL",
+      "campaigns": "675",
+      "spend": "4829.34",
+      "spend_share": "1.0",
+      "conversions": "442424",
+      "ctr": "0.361158",
+      "cvr": "0.0744",
+      "cpa": "0.010916",
+      "spend_retention_w4_vs_w1": "1.0162",
+      "campaigns_spend_halved": "78"
+    }
+  }
 }

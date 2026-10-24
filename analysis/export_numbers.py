@@ -52,6 +52,14 @@ def main():
         "ipinyou_advertisers": read_csv("kpi_advertiser"),
         "auction": {r["exchange"]: r for r in read_csv("auction_health") if r["slot_visibility"] == "ALL"},
         "floor_sizing_all": [r for r in read_csv("floor_sizing") if r["exchange"] == "ALL"],
+        "criteo_overall": one_row(con, """
+            SELECT count(*) AS impressions, count(DISTINCT campaign) AS campaigns, sum(cost) AS spend,
+                   sum(click) AS clicks, sum(attribution) AS conversions FROM attribution"""),
+        "criteo_concentration": one_row(con, """
+            SELECT max(cumulative_spend_share) FILTER (WHERE spend_rank <= 135) AS top20pct_spend_share,
+                   max(cumulative_spend_share) FILTER (WHERE spend_rank <= 68)  AS top10pct_spend_share
+            FROM read_csv('outputs/campaign_segments.csv')"""),
+        "segments": {r["segment"]: r for r in read_csv("segment_summary")},
     }
     ab = OUT / "ab_readout.json"
     if ab.exists():

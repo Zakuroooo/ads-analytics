@@ -62,6 +62,24 @@ SELECT * FROM (VALUES
 CREATE OR REPLACE VIEW attribution AS
 SELECT * FROM read_parquet('data/attribution.parquet');
 
+-- One row per Criteo campaign (our stand-in for "advertiser"): spend, outcomes, weekly spend.
+-- timestamp is seconds since the start of the 30-day window, so timestamp // 86400 = day 0..30.
+-- Conversions = sum(attribution): the impression a conversion was credited to (last touch).
+-- Weeks 1-4 = days 0-6, 7-13, 14-20, 21-27; days 28-30 are a partial week and left out of weekly figures.
+CREATE OR REPLACE VIEW campaigns AS
+SELECT campaign,
+       count(*)                                                     AS impressions,
+       sum(click)                                                   AS clicks,
+       sum(attribution)                                             AS conversions,
+       sum(cost)                                                    AS spend,
+       count(DISTINCT timestamp // 86400)                           AS active_days,
+       sum(cost) FILTER (WHERE timestamp // 86400 BETWEEN 0 AND 6)    AS spend_w1,
+       sum(cost) FILTER (WHERE timestamp // 86400 BETWEEN 7 AND 13)   AS spend_w2,
+       sum(cost) FILTER (WHERE timestamp // 86400 BETWEEN 14 AND 20)  AS spend_w3,
+       sum(cost) FILTER (WHERE timestamp // 86400 BETWEEN 21 AND 27)  AS spend_w4
+FROM attribution
+GROUP BY campaign;
+
 -- Criteo Uplift: one row per user in the randomised test
 CREATE OR REPLACE VIEW uplift AS
 SELECT * FROM read_parquet('data/uplift.parquet');

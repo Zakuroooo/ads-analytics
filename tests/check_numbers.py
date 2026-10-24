@@ -74,6 +74,16 @@ for ex in sorted({r["exchange"] for r in sizing}):
     low = [float(r["revenue_lower_cny"]) for r in s]
     check("M2", f"sizing monotonic ({ex})", risk == sorted(risk) and low == sorted(low, reverse=True))
 
+# S4: segments partition the campaigns exactly
+seg = [r for r in rows("segment_summary") if r["segment"] != "ALL"]
+co = n["criteo_overall"]
+check("S4", "segment campaigns sum = all campaigns", total(seg, "campaigns") == co["campaigns"], f"{total(seg, 'campaigns'):.0f}")
+check("S4", "segment spend shares sum to 1", abs(total(seg, "spend_share") - 1) < 1e-3)
+check("S4", "segment conversions sum = Criteo total", total(seg, "conversions") == co["conversions"])
+camp = rows("campaign_segments")
+check("S4", "campaign list spend = Criteo total", abs(total(camp, "spend") - co["spend"]) < 1e-2)
+check("S4", "last cumulative spend share = 1", abs(float(camp[-1]["cumulative_spend_share"]) - 1) < 1e-4)
+
 # M3: A/B maths matches statsmodels
 if "ab" in n:
     for m in ("primary_conversion", "secondary_visit"):
