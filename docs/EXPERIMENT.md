@@ -1,0 +1,54 @@
+# EXPERIMENT — A/B design, written before the readout
+*Pre-registration. Written 2026-10-24, before I ran any analysis on the uplift data. Honest caveat: the
+dataset is public and its paper reports headline numbers; I have not used them to set anything below.
+Changes after seeing results go in §8 with a date, never by editing §1–7.*
+
+## 1. The test (as Criteo ran it)
+Users were randomly split. **Treatment** users were eligible to see Criteo ads; **control** users were not.
+Some treatment users never actually saw an ad (`exposure = 0`).
+
+Marketplace translation: *"Does showing a new sponsored ad format make users visit and order more?"*
+
+## 2. Hypotheses
+- H0: conversion rate (treatment) = conversion rate (control)
+- H1: they differ (two-sided test, even though we expect an increase)
+
+## 3. Metrics
+| Role | Metric | Unit |
+|---|---|---|
+| **Primary** | conversion rate = users with `conversion=1` / users | per user |
+| Secondary | visit rate = users with `visit=1` / users | per user |
+| Secondary | conversion given visit | per visiting user |
+| Guardrail | visit rate must not fall in treatment (ads annoying users) | per user |
+| Validity | sample-ratio mismatch (SRM) check | — |
+
+Limit: real marketplace guardrails (order cancellations, session length, organic restaurant clicks)
+are not in this data. Stated in the readout.
+
+## 4. Analysis
+- **Intent-to-treat (ITT)** is the main answer: compare everyone assigned, exposed or not. It is what a
+  launch decision would actually get.
+- Absolute lift = p_T − p_C; relative lift = (p_T − p_C) / p_C.
+- 95% CI for the difference: two-proportion z-interval (unpooled SE). Cross-checked with scipy.
+- p-value: two-proportion z-test (pooled SE).
+- **Effect on exposed users (CACE)** = ITT / exposure rate in treatment (control cannot be exposed),
+  reported as secondary with its assumption stated.
+- Exploratory (labelled exploratory, not used for the decision): lift by quartile of 2 features.
+
+## 5. Validity checks (run first)
+- **SRM:** chi-square test of observed treatment/control counts vs the intended split. The intended split
+  is taken from the dataset paper/README ⏳. If p < 0.001, stop and report the test as untrustworthy.
+- Rates are 0/1 only; no missing values.
+
+## 6. Power and MDE
+- α = 0.05 (two-sided), power = 80%.
+- MDE (absolute) = (z₀.₉₇₅ + z₀.₈) × √(p_C(1−p_C)(1/n_T + 1/n_C)), using the observed control rate.
+- Reported as both absolute and relative MDE, so leadership sees "the smallest lift this test could detect".
+
+## 7. Decision rule (fixed now)
+- **Ship** if: SRM passes AND primary CI lower bound > 0 AND visit-rate guardrail CI lower bound ≥ 0.
+- **Don't ship** if the primary CI upper bound < 0, or the guardrail CI is entirely below 0.
+- **Inconclusive** otherwise → recommend a longer test, with the sample size needed.
+
+## 8. Deviations after seeing data
+_None yet._

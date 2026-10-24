@@ -1,0 +1,22 @@
+# agent setup (local only)
+CLAUDE.md
+.claude/
+# data and raw downloads
+data/
+raw/
+*.parquet
+*.csv
+*.tsv
+*.bz2
+*.zip
+*.gz
+# secrets
+.env
+.env.*
+kaggle.json
+access_token
+# python
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
