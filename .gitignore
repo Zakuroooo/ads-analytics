@@ -20,3 +20,6 @@ access_token
 __pycache__/
 *.pyc
 .DS_Store
+
+# aggregated results are small and published (derived from CC BY-NC-SA data)
+!outputs/*.csv

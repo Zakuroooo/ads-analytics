@@ -2,7 +2,7 @@
 # Blocks commits that would publish data, secrets or local agent files.
 # Enabled with: git config core.hooksPath scripts/githooks
 
-bad=$(git diff --cached --name-only --diff-filter=ACMR | grep -E \
+bad=$(git diff --cached --name-only --diff-filter=ACMR | grep -v '^outputs/[a-z_]*\.csv$' | grep -E \
   '(^|/)(data|raw)/|\.(parquet|csv|tsv|bz2|zip|gz)$|(^|/)\.env|kaggle\.json|access_token|(^|/)CLAUDE\.md$|(^|/)\.claude/')
 
 if [ -n "$bad" ]; then
