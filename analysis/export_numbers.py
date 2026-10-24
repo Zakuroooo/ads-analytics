@@ -42,6 +42,17 @@ def kpi_overall(con):
     return row
 
 
+def clean(v):
+    """Round floats to 10 significant figures: parallel sums differ in the last digits run to run."""
+    if isinstance(v, float):
+        return float(f"{v:.10g}")
+    if isinstance(v, dict):
+        return {k: clean(x) for k, x in v.items()}
+    if isinstance(v, list):
+        return [clean(x) for x in v]
+    return v
+
+
 def main():
     con = connect()
     numbers = {
@@ -64,7 +75,7 @@ def main():
     ab = OUT / "ab_readout.json"
     if ab.exists():
         numbers["ab"] = json.loads(ab.read_text())
-    (OUT / "numbers.json").write_text(json.dumps(numbers, indent=2, default=str))
+    (OUT / "numbers.json").write_text(json.dumps(clean(numbers), indent=2, default=str))
     print(f"wrote outputs/numbers.json ({len(numbers)} sections)")
 
 

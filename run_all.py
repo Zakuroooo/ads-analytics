@@ -13,8 +13,10 @@ STEPS = [
     ("numbers.json", ["analysis/export_numbers.py"]),
     ("Excel model", ["excel/build_xlsx.py"]),
     ("Dashboard data", ["dashboard/build_data.py"]),
+    ("Docs from templates", ["analysis/render_docs.py"]),
     ("Tie-out checks", ["tests/check_numbers.py"]),
     ("Excel recalculation check", ["tests/check_excel.py"]),
+    ("Docs check", ["tests/check_docs.py"]),
 ]
 
 for name, args in STEPS:

@@ -1,7 +1,7 @@
 # PROGRESS — the build log
 *Every finished step, in order: what I built, how, what went wrong, and how I know it works. Newest at the bottom.*
 
-**Latest:** Step 1, setup + data (2026-10-24) · **Next:** P2 KPI layer
+**Latest:** Step 8, docs (2026-10-24) · **Next:** P9 slides, then GitHub + deploy (needs Pranay's OK)
 
 ---
 
@@ -29,3 +29,42 @@ Downloaded all three datasets with the Kaggle CLI, converted to Parquet (`script
 - The iPinYou README says bids came from a fixed high-price strategy, so iPinYou's bid isn't a real valuation. ADR 0004 (floor sizing) needs revisiting in P3.
 
 **Facts confirmed from sources:** licences (Criteo CC BY-NC-SA 4.0; iPinYou public release, no explicit licence), price unit (RMB fen per 1,000 imps), second-price auction, season-3 advertiser industries.
+
+## Step 2 — P2 KPI layer (2026-10-24)
+`sql/00_views.sql` (tables; `impressions` = training + test imps, deduped), `sql/01_kpi_daily.sql`, `sql/02_kpi_advertiser.sql`,
+`analysis/run_sql.py` (runs each query → `outputs/*.csv`), `analysis/export_numbers.py` (→ `outputs/numbers.json`), `tests/check_numbers.py`.
+**Checked:** daily and advertiser totals equal overall totals computed separately (S1, S2); ratios recomputed (S3).
+**Went wrong:** DuckDB 2.0 removed `fetchone()` on relations and refuses a new query while a result is open; switched to `execute().fetchall()`.
+CVR showed 0% for advertisers that never had conversion tracking; now NULL.
+
+## Step 3 — P3 auction health + floor sizing (2026-10-24)
+`sql/03_auction_health.sql` (GROUPING SETS by exchange × visibility), `sql/04_floor_sizing.sql` (minimum floor 0–150, per exchange).
+**Changed the model:** ADR 0004 → 0007 after reading that iPinYou's bids were fixed; the new model uses prices paid and a break-even retention.
+**Checked:** at X = 0 every exchange reproduces actual revenue (M1); monotonic (M2); auction totals = KPI totals.
+
+## Step 4 — P4 advertiser segments (2026-10-24)
+`campaigns` view, `sql/05_campaign_segments.sql` (675 rows, running spend share, segment), `sql/06_segment_summary.sql` (ROLLUP).
+**Changed the plan:** churn cohorts dropped (98% of campaigns active all month in the sample); spend retention instead.
+**Checked:** segments partition all campaigns, spend and conversions exactly (S4).
+
+## Step 5 — P5 A/B readout (2026-10-24)
+`analysis/ab_readout.py` following EXPERIMENT.md: SRM, lift, CI, p-value, MDE, CACE, decision rule. Cross-checked with statsmodels (M3).
+**Independent review (M4):** a fresh agent re-derived everything from raw counts: all matched to 6 significant figures. It flagged the
+CACE as implausible, the pooled-tests risk, and the post-treatment ratio; written into EXPERIMENT.md §8. Decision unchanged: SHIP.
+
+## Step 6 — P6 Excel / Sheets model (2026-10-24)
+`excel/build_xlsx.py` → `excel/ads_kpi_model.xlsx`: KPI_Summary (SUM, XLOOKUP, INDEX/MATCH), Segments (COUNTIFS/SUMIFS pivot-style),
+Campaign_Lookup (XLOOKUP), Floor_Model (dropdown inputs, sensitivity grid), AB_Test (NORM.S.INV / NORM.S.DIST). Only Sheets-compatible functions.
+**Checked:** `tests/check_excel.py` recalculates the workbook with the `formulas` engine: 21/21 cells = numbers.json (X1).
+Not yet checked: an actual upload to Google Sheets (needs Pranay's Google account).
+
+## Step 7 — P7 dashboard (2026-10-24)
+`dashboard/index.html` + `build_data.py` (→ `data.js`, `data.json`, Excel copy). Hand-written SVG charts, own palette validated for
+colour-blind separation; FIX/GROW coloured, other segments grey (4 colours failed the all-pairs check for a scatter).
+**Checked:** headless Chrome renders all sections; screenshots at 1440 px and inside a 390 px frame (headless Chrome's minimum window is 500 px,
+which first looked like a mobile overflow bug). Fixed: tables widening grid columns (`min-width: 0`), charts now size to their container.
+
+## Step 8 — P8 docs (2026-10-24)
+README, MEMO, STORY, WALKTHROUGH rendered from `docs/_templates/` by `analysis/render_docs.py`; `tests/check_docs.py` (X2) fails if a
+rendered file was hand-edited or a template has a hand-typed percentage. Updated METRICS, DATA, TESTING, PLAYBOOK, DECISIONS, ANALYSIS-PLAN results.
+Rounding: docs use round-half-up so they match the dashboard's JavaScript (24.65% → 24.7% in both).

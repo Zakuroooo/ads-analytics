@@ -20,3 +20,17 @@ State every assumption, its source, and a low/base/high range.
 
 ## What I won't claim
 Causal effects from non-randomised data (Q1–Q7 are descriptive). Only Q8 is causal.
+
+## Results (2026-10-24)
+*Numbers live in [MEMO.md](MEMO.md) and `outputs/numbers.json`; this table only records whether my guess held.*
+
+| # | Verdict | What happened |
+|---|---|---|
+| Q1 | ➖ | One category does lead revenue (MEMO finding 1). No weekday pattern can be judged from 10 days with advertisers starting and stopping. Revenue followed volume; CPM barely moved. |
+| Q2 | ✅ | The floor set the price on a large share of floored impressions (MEMO finding 2). |
+| Q3 | ✅ | Win rate, CPM and floor binding differ a lot by exchange; one exchange has no floors (`outputs/auction_health.csv`). |
+| Q4 | ➖ | My guess was too simple. Whether a floor raise earns money depends entirely on how many at-risk impressions still sell; the model gives a break-even instead of a yes/no (ADR 0007). |
+| Q5 | ✅ | Close to the 80/20 guess (MEMO finding 4). |
+| Q6 | ✅ | A large, expensive "fix" group exists, and a small efficient "grow" group (MEMO finding 4). |
+| Q7 | ❌ → changed | Churn can't be measured: Criteo's sample keeps almost every campaign active all 31 days. Replaced with spend retention (week 4 / week 1). |
+| Q8 | ✅ (bigger than guessed) | Positive and far above the MDE (MEMO finding 5), with caveats in EXPERIMENT.md §8. |

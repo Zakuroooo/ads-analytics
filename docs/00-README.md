@@ -25,7 +25,7 @@ of each step is in [PROGRESS.md](PROGRESS.md). To learn it from zero, go to [`..
 | 13 | [CLAUDE-CODE-PLAYBOOK.md](CLAUDE-CODE-PLAYBOOK.md) | How the agent was directed and checked | 10 min |
 | 14 | [DECISIONS.md](DECISIONS.md) | Plain list of choices and what I dropped | 3 min |
 
-After the build: `MEMO.md` (1-page leadership memo), `READOUT.pptx` (5 slides), `WALKTHROUGH.md` (2-minute script).
+For leadership: [MEMO.md](MEMO.md) (1-page memo) · [WALKTHROUGH.md](WALKTHROUGH.md) (2-minute spoken script) · `READOUT.pptx` (5 slides, after P9). MEMO, STORY, WALKTHROUGH and the root README are rendered from `_templates/` so their numbers always match `outputs/numbers.json`.
 Also: [`../CONTRIBUTING.md`](../CONTRIBUTING.md). The agent's working rules live in a local `CLAUDE.md` that is not committed.
 
 ## How the docs connect
@@ -58,4 +58,4 @@ flowchart LR
     N --> MEMO[Memo + 5 slides]
 ```
 
-*Status: docs only, as of 2026-10-24. Every result in these docs is a hypothesis until `numbers.json` proves it.*
+*Status 2026-10-24: analysis, Excel and dashboard built; all checks pass (`python run_all.py`).*

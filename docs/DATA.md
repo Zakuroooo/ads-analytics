@@ -17,7 +17,7 @@ flowchart LR
 | Where I get it | Kaggle mirror `lastsummer/ipinyou` (`training3rd/`) | Kaggle mirror `sharatsachin/criteo-attribution-modeling` | Kaggle mirror `arashnic/uplift-modeling` |
 | Licence | No explicit licence; README says iPinYou "now release[s] all the training datasets" for the public contest ✅ | CC BY-NC-SA 4.0 (Criteo AI Lab page) ✅ | CC BY-NC-SA 4.0 (Criteo AI Lab page) ✅ |
 | Download | ~880 MB bz2 (bid ~650 MB, imp ~220 MB, clk/conv small) | ~670 MB zip → 2.6 GB TSV | 324 MB zip → 3.2 GB CSV ✅ |
-| Rows | to count ⏳ | "16.5M impressions, 45K conversions, 700 campaigns" (Criteo page) ⏳ | **13,979,592** = published v2.1 count ✅ |
+| Rows | 11,457,419 bids · 4,724,634 impressions after dedupe ✅ | **16,468,027** impressions, **675** campaigns, 31 days ✅ | **13,979,592** = published v2.1 count ✅ |
 
 **Notes from the sources (✅ read 2026-10-24):**
 - iPinYou README: logs come from campaigns run "with a fixed relatively high-price bidding strategy (with exceptions on some campaigns in the third season)". So iPinYou's bid is **not** a real advertiser valuation; the paying price (set by competitors or the floor) is the more meaningful market signal. In season 3, "conversion" means a landing-page visit, not a purchase.
@@ -68,6 +68,10 @@ Season-3 advertisers (paper, Table 2) ✅: **2259 milk powder · 2261 telecom ·
 | Clicks, conversions | small: ~3.9K clicks, ~780 conversions in total | CTR fine at this volume; CVR/CPA per advertiser reported with counts, not over-read |
 
 After all conversions the deduplicated `impressions` view has 4,724,634 rows.
+
+**Criteo Attribution quirks (✅ found in P4):** 36% of rows are clicks, far above any real display CTR, so the
+sample over-represents clicked impressions; CTR is only compared between campaigns. About 98% of campaigns are
+active on day 0 and still active on day 30, so campaign churn can't be studied.
 
 ## 3. Processing
 Raw → Parquet once, streamed, then raw deleted (ADR 0001). iPinYou bz2 is decompressed with `bzcat`
