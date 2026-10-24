@@ -2,7 +2,7 @@
 # The story
 *The whole project in simple words, in my voice. This is also what I say in interviews.*
 
-> **Where we are (2026-10-24):** analysis, Excel model and dashboard done; every check passes. Next: memo slides, deploy, practice set.
+> **Where we are (2026-10-24):** everything is built, checked and live: https://slotwise-ads.vercel.app · code: https://github.com/Zakuroooo/ads-analytics. LEARN course and practice set written.
 
 ## 1. Why I built it
 I'm applying to the Swiggy Ads team as a business analyst intern. I didn't want to just say "I know SQL

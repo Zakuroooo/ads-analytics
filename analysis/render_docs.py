@@ -91,7 +91,9 @@ def values():
         "protect_retention": pct(seg["PROTECT"]["spend_retention_w4_vs_w1"]),
         "grow_n": seg["GROW"]["campaigns"], "grow_share": pct(seg["GROW"]["spend_share"]),
         "grow_cpa_vs_protect": pct(1 - float(seg["GROW"]["cpa"]) / float(seg["PROTECT"]["cpa"])),
-        "watch_n": seg["WATCH"]["campaigns"],
+        "watch_n": seg["WATCH"]["campaigns"], "watch_share": pct(seg["WATCH"]["spend_share"]),
+        "watch_retention": pct(seg["WATCH"]["spend_retention_w4_vs_w1"]),
+        "grow_retention": pct(seg["GROW"]["spend_retention_w4_vs_w1"]),
         "halved_all": seg["ALL"]["campaigns_spend_halved"],
         # A/B
         "ab_users": compact(ab["counts"]["T"]["users"] + ab["counts"]["C"]["users"]),

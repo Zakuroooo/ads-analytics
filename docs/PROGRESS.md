@@ -1,7 +1,7 @@
 # PROGRESS — the build log
 *Every finished step, in order: what I built, how, what went wrong, and how I know it works. Newest at the bottom.*
 
-**Latest:** Step 8, docs (2026-10-24) · **Next:** P9 slides, then GitHub + deploy (needs Pranay's OK)
+**Latest:** Step 13, LEARN course (2026-10-24) · **Next:** Pranay uploads the Excel file to Google Sheets once; reads LEARN 01–10 before applying
 
 ---
 
@@ -68,3 +68,23 @@ which first looked like a mobile overflow bug). Fixed: tables widening grid colu
 README, MEMO, STORY, WALKTHROUGH rendered from `docs/_templates/` by `analysis/render_docs.py`; `tests/check_docs.py` (X2) fails if a
 rendered file was hand-edited or a template has a hand-typed percentage. Updated METRICS, DATA, TESTING, PLAYBOOK, DECISIONS, ANALYSIS-PLAN results.
 Rounding: docs use round-half-up so they match the dashboard's JavaScript (24.65% → 24.7% in both).
+
+## Step 9 — P9 slides (2026-10-24)
+`analysis/build_readout.py` → `docs/READOUT.pptx` (5 slides, Georgia/Arial so Google Slides renders them). Numbers from the same values as the memo.
+Checked: slide 1 rendered with Quick Look; slides 2–5 checked by layout arithmetic only.
+
+## Step 10 — P10 ship (2026-10-24, Pranay approved)
+Public repo https://github.com/Zakuroooo/ads-analytics (created with the GitHub connector, pushed over HTTPS).
+Vercel project `slotwise-ads`, linked to the repo, root `dashboard/`: https://slotwise-ads.vercel.app (public, 200).
+**Went wrong:** in a hidden browser tab the scroll-fade never fired, leaving sections at opacity 0. Fixed: content is visible by default,
+animation only after JS confirms it can reveal, plus a 2.5 s fallback. Verified live: no console errors; floor slider recalculates (X=50, exchange 1 → break-even 52%, matches SQL).
+
+## Step 11 — P11 hand-back (2026-10-24)
+4 resume bullets + links written to the shared notes folder (`ads-analytics-handover.md`) for the Resume chat.
+
+## Step 12 — P12 practice (2026-10-24)
+`practice/build_sql_practice.py` → `practice/sql_practice.md`: 13 exercises on our tables; every expected output comes from running the answer.
+`practice/guesstimates.md`: 3 ads drills. **Went wrong:** drill 1 said ₹4.8 crore; re-running the arithmetic showed ₹48 lakh. Fixed, and kept as a teaching note.
+
+## Step 13 — P13 LEARN (2026-10-24)
+16 chapters in `LEARN/`, rendered from `LEARN/_templates/` so real numbers match `numbers.json`. Each ends with check questions + answers.

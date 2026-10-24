@@ -40,3 +40,7 @@ joins that silently multiply rows (always compare row counts before and after a 
 ## 4. Status (2026-10-24)
 `python run_all.py` runs everything: 29/29 tie-outs (S1–S4, M1–M3) · 21/21 Excel cells (X1) · 8/8 docs checks (X2).
 M4 done once by an independent agent from raw counts: all A/B numbers matched to 6 significant figures (EXPERIMENT.md §8).
+
+**LEARN chapters** are rendered from `LEARN/_templates/` with the same values, so their real numbers always match.
+They are left out of the hand-typed-percentage scan because their toy examples (made-up 3-row tables) need typed numbers;
+toy numbers are always labelled "toy".
