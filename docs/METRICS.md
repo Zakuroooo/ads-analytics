@@ -6,7 +6,7 @@
 | **Bids** | count of bid requests iPinYou bid on | count | iPinYou bid log | duplicates by `BidID` removed |
 | **Impressions** | count of won auctions where the ad was shown | count | iPinYou imp log | an imp without a matching bid is counted and flagged |
 | **Win rate** *(stand-in for fill rate)* | impressions / bids | % | iPinYou | bidder's view, not publisher's (ADR 0005) |
-| **Revenue / spend** | Σ price paid per impression ÷ 1,000 | CNY fen (2013) | iPinYou `PayingPrice` is per-1,000 ⏳ | same money: advertiser spend = marketplace revenue |
+| **Revenue / spend** | Σ price paid per impression ÷ 1,000 | CNY fen (2013) | iPinYou `PayingPrice` is fen per 1,000 imps ✅ | same money: advertiser spend = marketplace revenue |
 | **CPM** | revenue / impressions × 1,000 | fen per 1,000 imps | iPinYou | = average `PayingPrice` |
 | **Clicks** | count of click log rows joined to an imp | count | iPinYou clk | repeat clicks on one imp counted once |
 | **CTR** | clicks / impressions | % | iPinYou, Criteo Attr. | undefined when imps = 0 → NULL, not 0 |

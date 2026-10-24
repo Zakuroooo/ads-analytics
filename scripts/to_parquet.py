@@ -99,7 +99,28 @@ def ipinyou():
             bz.unlink()
 
 
+def ipinyou_test():
+    """Season-3 leaderboard test impressions (Oct 22-28). iPinYou removed these from the training
+    impression logs, so they are added back. Format = impression log + click count + conversion flag."""
+    bz = next((RAW / "ipinyou").rglob("leaderboard.test.data.20131021_28.txt.bz2"))
+    out = DATA / "ipinyou" / "test_imp" / "20131021_28.parquet"
+    txt = bz.with_suffix("")
+    with open(txt, "wb") as f:
+        subprocess.run(["bzcat", str(bz)], stdout=f, check=True)
+    cols = EVENT_COLS + ["click_count", "has_conv"]
+    col_spec = "{" + ", ".join(f"'{c}': 'VARCHAR'" for c in cols) + "}"
+    select = f"""SELECT {KEEP}, CAST(pay_price AS INT) AS pay_price,
+                        CAST(click_count AS INT) AS click_count, CAST(has_conv AS INT) AS has_conv
+                 FROM read_csv('{txt}', delim='\\t', header=false, quote='', escape='',
+                               nullstr='null', columns={col_spec})"""
+    rows = write_parquet(select, out)
+    check("ipinyou test_imp", count_lines(txt), rows)
+    txt.unlink()
+    if not KEEP_RAW:
+        bz.unlink()
+
+
 if __name__ == "__main__":
-    jobs = {"uplift": uplift, "attribution": attribution, "ipinyou": ipinyou}
+    jobs = {"uplift": uplift, "attribution": attribution, "ipinyou": ipinyou, "ipinyou_test": ipinyou_test}
     for name in [a for a in sys.argv[1:] if not a.startswith("--")] or jobs:
         jobs[name]()
