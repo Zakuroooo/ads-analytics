@@ -58,3 +58,13 @@ are not in this data. Stated in the readout.
   here. Also: absolute visit/conversion rates are not representative of any one live campaign; the
   readout reports them, but the decision rests on the treatment-vs-control difference.
   No change to metrics, alpha or decision rule.
+- **2026-10-24 (after the readout, from an independent re-derivation of the statistics):** all numbers
+  matched to 6 significant figures; the rule gives **SHIP**. Caveats added, not changes to the rule:
+  1. The effect-on-exposed (CACE) estimate is implausibly large (+28.7 pp visit rate for exposed users vs
+     a 3.8% control rate; exposure is only 3.6% of treatment users). Likely exposure is logged in a way
+     that breaks the IV assumption (e.g. recorded around a visit). **CACE is reported but not used.**
+  2. The data pools several tests; SRM and lift could differ inside each test (Simpson's paradox).
+     Per-test IDs aren't in the data, so this can't be checked here. Recommendation becomes
+     "ship, and confirm with a single-campaign holdout".
+  3. Conversion-per-visit conditions on a post-treatment variable, so it is **descriptive only**.
+  4. Three metrics, no multiplicity correction: irrelevant at these z-values (z ≥ 14), stated anyway.

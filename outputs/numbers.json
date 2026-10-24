@@ -181,6 +181,7 @@
       "min_floor_fen_cpm": "0",
       "impressions": "4724634",
       "at_risk_imps": "0",
+      "can_sell_at_x": "0",
       "share_at_risk": "0.0",
       "revenue_now_cny": "4253.82",
       "revenue_lower_cny": "4253.82",
@@ -194,6 +195,7 @@
       "min_floor_fen_cpm": "10",
       "impressions": "4724634",
       "at_risk_imps": "343546",
+      "can_sell_at_x": "343546",
       "share_at_risk": "0.0727",
       "revenue_now_cny": "4253.82",
       "revenue_lower_cny": "4235.39",
@@ -207,6 +209,7 @@
       "min_floor_fen_cpm": "20",
       "impressions": "4724634",
       "at_risk_imps": "651540",
+      "can_sell_at_x": "651540",
       "share_at_risk": "0.1379",
       "revenue_now_cny": "4253.82",
       "revenue_lower_cny": "4191.81",
@@ -220,6 +223,7 @@
       "min_floor_fen_cpm": "30",
       "impressions": "4724634",
       "at_risk_imps": "1164522",
+      "can_sell_at_x": "1164522",
       "share_at_risk": "0.2465",
       "revenue_now_cny": "4253.82",
       "revenue_lower_cny": "4076.85",
@@ -233,6 +237,7 @@
       "min_floor_fen_cpm": "40",
       "impressions": "4724634",
       "at_risk_imps": "1628770",
+      "can_sell_at_x": "1628770",
       "share_at_risk": "0.3447",
       "revenue_now_cny": "4253.82",
       "revenue_lower_cny": "3924.18",
@@ -246,6 +251,7 @@
       "min_floor_fen_cpm": "50",
       "impressions": "4724634",
       "at_risk_imps": "1855204",
+      "can_sell_at_x": "1855204",
       "share_at_risk": "0.3927",
       "revenue_now_cny": "4253.82",
       "revenue_lower_cny": "3824.49",
@@ -259,6 +265,7 @@
       "min_floor_fen_cpm": "60",
       "impressions": "4724634",
       "at_risk_imps": "2189630",
+      "can_sell_at_x": "2189630",
       "share_at_risk": "0.4634",
       "revenue_now_cny": "4253.82",
       "revenue_lower_cny": "3648.23",
@@ -272,6 +279,7 @@
       "min_floor_fen_cpm": "70",
       "impressions": "4724634",
       "at_risk_imps": "2385068",
+      "can_sell_at_x": "2385068",
       "share_at_risk": "0.5048",
       "revenue_now_cny": "4253.82",
       "revenue_lower_cny": "3522.82",
@@ -285,6 +293,7 @@
       "min_floor_fen_cpm": "80",
       "impressions": "4724634",
       "at_risk_imps": "2677835",
+      "can_sell_at_x": "2677835",
       "share_at_risk": "0.5668",
       "revenue_now_cny": "4253.82",
       "revenue_lower_cny": "3311.16",
@@ -298,6 +307,7 @@
       "min_floor_fen_cpm": "90",
       "impressions": "4724634",
       "at_risk_imps": "2838593",
+      "can_sell_at_x": "2838593",
       "share_at_risk": "0.6008",
       "revenue_now_cny": "4253.82",
       "revenue_lower_cny": "3176.3",
@@ -311,6 +321,7 @@
       "min_floor_fen_cpm": "100",
       "impressions": "4724634",
       "at_risk_imps": "2954446",
+      "can_sell_at_x": "2954446",
       "share_at_risk": "0.6253",
       "revenue_now_cny": "4253.82",
       "revenue_lower_cny": "3067.41",
@@ -324,6 +335,7 @@
       "min_floor_fen_cpm": "110",
       "impressions": "4724634",
       "at_risk_imps": "3182697",
+      "can_sell_at_x": "3182697",
       "share_at_risk": "0.6736",
       "revenue_now_cny": "4253.82",
       "revenue_lower_cny": "2833.33",
@@ -337,6 +349,7 @@
       "min_floor_fen_cpm": "120",
       "impressions": "4724634",
       "at_risk_imps": "3276995",
+      "can_sell_at_x": "3276995",
       "share_at_risk": "0.6936",
       "revenue_now_cny": "4253.82",
       "revenue_lower_cny": "2725.83",
@@ -350,6 +363,7 @@
       "min_floor_fen_cpm": "130",
       "impressions": "4724634",
       "at_risk_imps": "3374051",
+      "can_sell_at_x": "3374051",
       "share_at_risk": "0.7141",
       "revenue_now_cny": "4253.82",
       "revenue_lower_cny": "2605.42",
@@ -363,6 +377,7 @@
       "min_floor_fen_cpm": "140",
       "impressions": "4724634",
       "at_risk_imps": "3461064",
+      "can_sell_at_x": "3461064",
       "share_at_risk": "0.7326",
       "revenue_now_cny": "4253.82",
       "revenue_lower_cny": "2488.68",
@@ -376,6 +391,7 @@
       "min_floor_fen_cpm": "150",
       "impressions": "4724634",
       "at_risk_imps": "3600236",
+      "can_sell_at_x": "3600236",
       "share_at_risk": "0.762",
       "revenue_now_cny": "4253.82",
       "revenue_lower_cny": "2287.58",
@@ -388,7 +404,7 @@
   "criteo_overall": {
     "impressions": 16468027,
     "campaigns": 675,
-    "spend": 4829.340540910069,
+    "spend": 4829.340540910014,
     "clicks": 5947563,
     "conversions": 442424
   },
@@ -457,5 +473,124 @@
       "spend_retention_w4_vs_w1": "1.0162",
       "campaigns_spend_halved": "78"
     }
+  },
+  "ab": {
+    "counts": {
+      "C": {
+        "users": 2096937,
+        "visits": 80105,
+        "conversions": 4063,
+        "exposed": 0,
+        "conversions_after_visit": 4063
+      },
+      "T": {
+        "users": 11882655,
+        "visits": 576824,
+        "conversions": 36711,
+        "exposed": 428212,
+        "conversions_after_visit": 36711
+      }
+    },
+    "srm": {
+      "observed_treatment_share": 0.8500001287591226,
+      "intended": 0.85,
+      "chi2": 1.817775848947767e-06,
+      "p_value": 0.9989242531217909,
+      "passes": true
+    },
+    "primary_conversion": {
+      "rate_treatment": 0.0030894610674129645,
+      "rate_control": 0.0019375880152813366,
+      "abs_lift": 0.0011518730521316279,
+      "abs_ci95": [
+        0.0010845057902364738,
+        0.001219240314026782
+      ],
+      "rel_lift": 0.5944881177252619,
+      "rel_ci95": [
+        0.5436975782271103,
+        0.6469497610321502
+      ],
+      "z": 28.516529408977203,
+      "p_value": 7.308263285838683e-179,
+      "check_statsmodels": {
+        "p_value": 7.308263285838683e-179,
+        "ci95": [
+          0.0010845057902364738,
+          0.001219240314026782
+        ],
+        "matches": true
+      }
+    },
+    "secondary_visit": {
+      "rate_treatment": 0.048543360048743316,
+      "rate_control": 0.03820095691954503,
+      "abs_lift": 0.010342403129198284,
+      "abs_ci95": [
+        0.010055628213713731,
+        0.010629178044682837
+      ],
+      "rel_lift": 0.27073675539019604,
+      "rel_ci95": [
+        0.26156617437512963,
+        0.2799739992231647
+      ],
+      "z": 65.24742956249247,
+      "p_value": 0.0,
+      "check_statsmodels": {
+        "p_value": 0.0,
+        "ci95": [
+          0.010055628213713731,
+          0.010629178044682837
+        ],
+        "matches": true
+      }
+    },
+    "secondary_conversion_given_visit": {
+      "rate_treatment": 0.06364332968115058,
+      "rate_control": 0.05072092878097497,
+      "abs_lift": 0.012922400900175608,
+      "abs_ci95": [
+        0.011277458485090843,
+        0.014567343315260373
+      ],
+      "rel_lift": 0.2547745321458448,
+      "rel_ci95": [
+        0.2158025216413746,
+        0.29499577315915615
+      ],
+      "z": 14.204215508502378,
+      "p_value": 8.626325267075115e-46,
+      "check_statsmodels": {
+        "p_value": 8.626325267075115e-46,
+        "ci95": [
+          0.011277458485090841,
+          0.014567343315260375
+        ],
+        "matches": true
+      }
+    },
+    "guardrail_visit_not_down": {
+      "abs_ci95": [
+        0.010055628213713731,
+        0.010629178044682837
+      ],
+      "passes": true
+    },
+    "mde_conversion": {
+      "abs": 9.228077217163973e-05,
+      "rel": 0.04762662209088892
+    },
+    "mde_visit": {
+      "abs": 0.00040223600391407354,
+      "rel": 0.01052947455638931
+    },
+    "effect_on_exposed": {
+      "exposure_rate_treatment": 0.036036727482199896,
+      "exposed_in_control": 0,
+      "conversion_abs_lift_exposed": 0.031963863885825596,
+      "visit_abs_lift_exposed": 0.28699618005843747
+    },
+    "decision": "ship"
   }
 }

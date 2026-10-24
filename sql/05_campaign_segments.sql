@@ -39,6 +39,8 @@ SELECT c.campaign,
        round(c.cvr, 4)                                       AS cvr,
        round(c.cpa, 6)                                       AS cpa,
        round(c.spend_retention_w4_vs_w1, 4)                  AS spend_retention_w4_vs_w1,
+       round(c.spend_w1, 4)                                  AS spend_w1,
+       round(c.spend_w4, 4)                                  AS spend_w4,
        CASE WHEN c.spend >= cut.median_spend AND c.cpa <= cut.median_cpa THEN 'PROTECT'
             WHEN c.spend >= cut.median_spend                              THEN 'FIX'
             WHEN c.cpa <= cut.median_cpa                                  THEN 'GROW'

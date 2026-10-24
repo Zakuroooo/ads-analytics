@@ -34,6 +34,7 @@ SELECT exchange,
        min_floor                                                          AS min_floor_fen_cpm,
        impressions,
        at_risk_imps,
+       can_sell_at_x,                                                     -- at risk, but bid >= X
        round(at_risk_imps / impressions, 4)                               AS share_at_risk,
        round(revenue_now_fen / 100000.0, 2)                               AS revenue_now_cny,
        round(safe_revenue_fen / 100000.0, 2)                              AS revenue_lower_cny,   -- r = 0
