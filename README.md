@@ -2,7 +2,7 @@
 # Slotwise: ads analytics for a delivery marketplace
 *Built on public ad data. Not Swiggy data, no Swiggy users.*
 
-**Live dashboard:** _link added after deploy_ · **Excel / Google Sheets model:** [`excel/ads_kpi_model.xlsx`](excel/ads_kpi_model.xlsx) · **1-page memo:** [`docs/MEMO.md`](docs/MEMO.md)
+**Live dashboard:** https://slotwise-ads.vercel.app · **Excel / Google Sheets model:** [`excel/ads_kpi_model.xlsx`](excel/ads_kpi_model.xlsx) · **1-page memo:** [`docs/MEMO.md`](docs/MEMO.md)
 
 I wanted to understand how the ads team of a food-delivery app makes decisions. Which advertisers
 should it grow? Is the auction healthy? What would a price change earn? Did a new ad treatment

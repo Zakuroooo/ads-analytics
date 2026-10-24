@@ -1,7 +1,7 @@
 # RUNBOOK — rebuild, refresh, deploy
 *Skeleton now; commands are confirmed as each phase lands. ⏳ = not yet tested.*
 
-## 1. Rebuild from scratch ⏳
+## 1. Rebuild from scratch
 ```bash
 git clone https://github.com/Zakuroooo/ads-analytics && cd ads-analytics
 python3 -m venv .venv && source .venv/bin/activate
@@ -19,9 +19,11 @@ Expected time on an M2 8 GB: ⏳ (measured in P1–P2).
 Google Drive → New → File upload → `excel/ads_kpi_model.xlsx` → right-click → Open with Google Sheets.
 Then check: `Summary!B2` (total revenue) equals `numbers.json → kpi.revenue_total`.
 
-## 4. Deploy the dashboard ⏳
-Static files in `dashboard/`. Vercel project root = `dashboard/`, no build command.
-Only after Pranay says yes. Live URL recorded here and in README.
+## 4. Deploy the dashboard ✅
+Vercel project `slotwise-ads` (team zakuroooo's projects), linked to GitHub `Zakuroooo/ads-analytics`, root directory `dashboard/`,
+no framework, no build command. **Every push to `main` redeploys automatically.**
+Live: https://slotwise-ads.vercel.app (public). The team-scoped aliases are behind Vercel login; share only the URL above.
+After changing data: `python run_all.py` → commit `dashboard/` + `outputs/` → push.
 
 ## 5. Troubleshooting
 | Symptom | Fix |
