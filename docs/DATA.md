@@ -15,9 +15,14 @@ flowchart LR
 | Publisher | iPinYou (Chinese DSP), for its 2013 bidding contest | Criteo AI Lab | Criteo AI Lab |
 | Paper | Zhang et al. 2014, *Real-Time Bidding Benchmarking with iPinYou Dataset* (arXiv:1407.7073) | Diemert et al. 2017, *Attribution Modeling Increases Efficiency of Bidding in Display Advertising* | Diemert et al. 2018, *A Large Scale Benchmark for Uplift Modeling* |
 | Where I get it | Kaggle mirror `lastsummer/ipinyou` (`training3rd/`) | Kaggle mirror `sharatsachin/criteo-attribution-modeling` | Kaggle mirror `arashnic/uplift-modeling` |
-| Licence | Research use per iPinYou README ⏳ | CC BY-NC-SA 4.0 ⏳ | CC BY-NC-SA 4.0 ⏳ |
-| Download | ~880 MB bz2 (bid ~650 MB, imp ~220 MB, clk/conv small) | ~670 MB zip → 2.6 GB TSV | ~340 MB zip → 3.2 GB CSV |
-| Rows (published) | to count ⏳ | 16,468,027 impressions ⏳ | 13,979,592 ⏳ |
+| Licence | No explicit licence; README says iPinYou "now release[s] all the training datasets" for the public contest ✅ | CC BY-NC-SA 4.0 (Criteo AI Lab page) ✅ | CC BY-NC-SA 4.0 (Criteo AI Lab page) ✅ |
+| Download | ~880 MB bz2 (bid ~650 MB, imp ~220 MB, clk/conv small) | ~670 MB zip → 2.6 GB TSV | 324 MB zip → 3.2 GB CSV ✅ |
+| Rows | to count ⏳ | "16.5M impressions, 45K conversions, 700 campaigns" (Criteo page) ⏳ | **13,979,592** = published v2.1 count ✅ |
+
+**Notes from the sources (✅ read 2026-10-24):**
+- iPinYou README: logs come from campaigns run "with a fixed relatively high-price bidding strategy (with exceptions on some campaigns in the third season)". So iPinYou's bid is **not** a real advertiser valuation; the paying price (set by competitors or the floor) is the more meaningful market signal. In season 3, "conversion" means a landing-page visit, not a purchase.
+- Criteo Attribution: `cost` and `cpo` are "not the real price, only a transformed version of it"; data is sub-sampled.
+- Criteo Uplift: pooled from several incrementality tests, sub-sampled non-uniformly; treatment ratio 0.85 (observed 0.8500001).
 
 Licence line for the README: *Non-commercial, educational analysis; datasets credited to iPinYou and
 Criteo AI Lab under their published terms. No raw data is redistributed in this repo.*

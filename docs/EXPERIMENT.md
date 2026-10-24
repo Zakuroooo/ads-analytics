@@ -50,5 +50,11 @@ are not in this data. Stated in the readout.
 - **Don't ship** if the primary CI upper bound < 0, or the guardrail CI is entirely below 0.
 - **Inconclusive** otherwise → recommend a longer test, with the sample size needed.
 
-## 8. Deviations after seeing data
-_None yet._
+## 8. Deviations and notes after loading data
+- **2026-10-24 (before looking at any outcome column):** Criteo's dataset page gives the intended
+  treatment ratio as **0.85**, and says the data comes from *several* incrementality tests, sub-sampled
+  non-uniformly for privacy. Observed treatment share in the file: 0.8500001. So the SRM check will
+  pass almost by construction; it is still run and reported, but it can't detect real assignment bugs
+  here. Also: absolute visit/conversion rates are not representative of any one live campaign; the
+  readout reports them, but the decision rests on the treatment-vs-control difference.
+  No change to metrics, alpha or decision rule.
