@@ -4,7 +4,7 @@
 health, floor-price sizing, advertiser segments and a real A/B test readout.
 
 **New here? Start with [STORY.md](STORY.md)**, the whole project in simple words. The detailed *how*
-of each step is in [PROGRESS.md](PROGRESS.md). To learn it from zero, go to [`../LEARN/`](../LEARN/00-START-HERE.md).
+of each step is in [PROGRESS.md](PROGRESS.md).
 
 ## Reading order
 

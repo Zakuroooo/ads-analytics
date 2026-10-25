@@ -1,7 +1,7 @@
 # PROGRESS — the build log
 *Every finished step, in order: what I built, how, what went wrong, and how I know it works. Newest at the bottom.*
 
-**Latest:** Step 13, LEARN course (2026-10-24) · **Next:** Pranay uploads the Excel file to Google Sheets once; reads LEARN 01–10 before applying
+**Latest:** Step 14, study material moved off the public repo (2026-10-25) · **Next:** Pranay uploads the Excel file to Google Sheets once
 
 ---
 
@@ -83,8 +83,11 @@ animation only after JS confirms it can reveal, plus a 2.5 s fallback. Verified 
 4 resume bullets + links written to the shared notes folder (`ads-analytics-handover.md`) for the Resume chat.
 
 ## Step 12 — P12 practice (2026-10-24)
-`practice/build_sql_practice.py` → `practice/sql_practice.md`: 13 exercises on our tables; every expected output comes from running the answer.
-`practice/guesstimates.md`: 3 ads drills. **Went wrong:** drill 1 said ₹4.8 crore; re-running the arithmetic showed ₹48 lakh. Fixed, and kept as a teaching note.
+A local SQL practice set: 13 exercises on our tables; every expected output comes from running the answer.
+Local guesstimate notes: 3 ads drills. **Went wrong:** drill 1 said ₹4.8 crore; re-running the arithmetic showed ₹48 lakh. Fixed, and kept as a teaching note.
 
-## Step 13 — P13 LEARN (2026-10-24)
-16 chapters in `LEARN/`, rendered from `LEARN/_templates/` so real numbers match `numbers.json`. Each ends with check questions + answers.
+## Step 13 — P13 study course (2026-10-24)
+16 study chapters rendered from templates so real numbers match `numbers.json`. Kept on Pranay's Mac.
+
+## Step 14 — study material made private (2026-10-25)
+The course and practice files were removed from the public repo (still on disk, git-ignored).

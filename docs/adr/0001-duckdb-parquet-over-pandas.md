@@ -19,5 +19,5 @@ DuckDB over Parquet (ZSTD), with `memory_limit='3GB'`.
 
 ## Consequences
 - Easier: one file per question, fast re-runs, runs on any laptop.
-- Harder: DuckDB SQL has small dialect differences from Postgres/BigQuery/Snowflake (I note them in LEARN ch. 05).
+- Harder: DuckDB SQL has small dialect differences from Postgres/BigQuery/Snowflake.
 - Watch: run one heavy query at a time.

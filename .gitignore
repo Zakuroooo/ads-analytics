@@ -26,3 +26,11 @@ __pycache__/
 
 # hand-over note for the Resume chat (local only)
 HANDOVER.md
+LEARN/course.html
+# study material: kept on Pranay's Mac, not published
+LEARN/
+practice/
+excel/practice.xlsx
+excel/build_practice.py
+tests/check_practice.py
+analysis/build_course.py

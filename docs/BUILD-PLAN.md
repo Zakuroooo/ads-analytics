@@ -24,8 +24,8 @@ auction health, advertiser segments, an A/B test readout and a pricing (floor-pr
 | 9 | `docs/METRICS.md` (metric definitions), `docs/MEMO.md` (1-page leadership memo, first person) | "Maintained metric definitions", "communicate to senior stakeholders" |
 | 10 | `docs/DECISIONS.md` — what I chose, why, what I dropped; README "What didn't work / limits" | Judgement, honesty |
 | 11 | `docs/READOUT.pptx` — 5 slides (objective → assumptions → findings → recommendation → next steps), opens in Google Slides, + `docs/WALKTHROUGH.md` 2-minute spoken script | "Interpret for leadership", spoken communication |
-| 12 | `practice/` — SQL practice set on his own tables (JOIN, GROUP BY/HAVING, CASE, CTE, ROW_NUMBER, LAG, running total), each with expected output; 3 ads guesstimate drills with worked answers | BA interview rounds |
-| 13 | `LEARN/` — full teaching course on this project, in simple English | So Pranay can explain every line |
+| 12 | Practice set (kept locally, not in this repo) — SQL practice on his own tables (JOIN, GROUP BY/HAVING, CASE, CTE, ROW_NUMBER, LAG, running total), each with expected output; 3 ads guesstimate drills with worked answers | BA interview rounds |
+| 13 | Teaching course in simple English (kept locally, not in this repo) | So Pranay can explain every line |
 | 14 | 4 resume bullets + GitHub + live links | Hand-back to the Resume chat |
 
 **Rule for every number:** it comes from a script output in `outputs/numbers.json`. No number is typed by
@@ -69,12 +69,12 @@ delete raw downloads after conversion. `data/` is never committed.
 | **P9 Readout** | 5-slide READOUT.pptx + 2-minute WALKTHROUGH.md | opens in Google Slides; script read aloud in ≤ 2 min | 1 h |
 | **P10 Ship** | ask Pranay → GitHub repo (public) → push → Vercel deploy | live link opens; README links work | 30 min |
 | **P11 Hand-back** | 4 resume bullets with real numbers + links → Resume chat | bullets ≤ ~110 chars, 1–3 bold phrases, numbers in `numbers.json` | 15 min |
-| **P12 Practice** | `practice/sql_practice.md` (+ answers run against his tables), `practice/guesstimates.md` | every expected output produced by actually running the query | 1.5 h |
-| **P13 LEARN** | chapters written from real outputs (can finish after 26 Oct) | each chapter ends with check questions + answers | 3–4 h |
+| **P12 Practice** | SQL practice set + guesstimate drills (local) | every expected output produced by actually running the query | 1.5 h |
+| **P13 Course** | local study chapters written from real outputs (can finish after 26 Oct) | each chapter ends with check questions + answers | 3–4 h |
 
 **Cut order if time runs short (agreed):** ship first = A/B readout, Excel model, dashboard, memo
 (+ the SQL/KPI work they depend on). Then: slides + walkthrough, practice set. Retention cohorts are the
-first analysis to drop. LEARN chapters can finish after he applies on 26 Oct.
+first analysis to drop. Study chapters can finish after he applies on 26 Oct.
 
 **One command rebuilds everything:** `python run_all.py` → SQL → numbers.json → Excel → dashboard → docs check.
 
@@ -94,8 +94,6 @@ ads-analytics/
 ├── excel/                  ← build_xlsx.py + ads_kpi_model.xlsx
 ├── dashboard/index.html    ← static, deployable to Vercel
 │   (after build: MEMO.md, READOUT.pptx, WALKTHROUGH.md)
-├── practice/               ← sql_practice.md (with expected outputs), guesstimates.md
-├── LEARN/                  ← the teaching course (see LEARN/00-START-HERE.md)
 ├── CLAUDE.md, .claude/     ← Claude Code setup (git-ignored, never committed)
 └── tests/check_numbers.py  ← ties out totals, checks docs vs numbers.json
 ```
@@ -104,7 +102,7 @@ ads-analytics/
 
 ## 4. How this is built like a pro Claude Code user
 
-You will learn these in `LEARN/12-how-this-was-built-with-claude-code.md`. The point: an expert doesn't
+The point: an expert doesn't
 just "ask the AI to build it" — they set up rules, checks and repeatable commands, so the AI's work
 can be trusted and re-run.
 
@@ -147,7 +145,7 @@ can be trusted and re-run.
 | iPinYou bz2 files are slow to decompress | stream `bzcat` → DuckDB → Parquet in background, one file at a time |
 | Kaggle download fails | Kaggle CLI with your token; fallback: original Criteo / iPinYou mirrors |
 | Interviewer: "Is this Swiggy data?" | No — public data, said in line one of README and memo |
-| Interviewer asks about a line you can't explain | LEARN folder + TEACH questions; every SQL file commented in plain English |
+| Interviewer asks about a line you can't explain | local study notes + interview questions; every SQL file commented in plain English |
 
 ---
 

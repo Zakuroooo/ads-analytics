@@ -42,7 +42,7 @@ flowchart LR
 | Sizing model is trustworthy | at today's floor it reproduces today's revenue exactly |
 | A/B readout is honest | design written before results; SRM check; CI and MDE reported |
 | Leadership can act on it | memo fits one page and ends with one recommendation |
-| Pranay can defend it | can explain every query and number without notes (LEARN + practice) |
+| Pranay can defend it | can explain every query and number without notes (local study notes) |
 
 ## 5. Scope
 **In:** KPI layer, auction health, floor-price sizing, advertiser segmentation + retention, A/B readout,
