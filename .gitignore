@@ -23,3 +23,6 @@ __pycache__/
 
 # aggregated results are small and published (derived from CC BY-NC-SA data)
 !outputs/*.csv
+
+# hand-over note for the Resume chat (local only)
+HANDOVER.md
