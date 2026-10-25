@@ -536,21 +536,20 @@ footer li { margin: 6px 0; }
 
   // ---------- motion ----------
   // Content is visible by default. When motion is allowed, anything on screen (or within 15% below it)
-  // is revealed at once with a 0.35 s fade; a scroll check runs once per frame, so fast scrolling never
-  // lands on a blank section. A timer reveals everything after 1.5 s as a safety net.
+  // is revealed at once with a 0.35 s fade. The check runs directly in the scroll handler (no animation
+  // frame needed), so fast scrolling never lands on a blank section; a timer reveals everything after 1.5 s.
   const rise = [...document.querySelectorAll(".rise")];
   if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    let pending = rise.slice(), queued = false;
+    let pending = rise.slice();
     const reveal = () => {
-      queued = false;
       const limit = innerHeight * 1.15;
       pending = pending.filter(n => { if (n.getBoundingClientRect().top < limit) { n.classList.add("in"); return false; } return true; });
-      if (!pending.length) removeEventListener("scroll", onScroll);
+      if (!pending.length) { removeEventListener("scroll", reveal); removeEventListener("resize", reveal); }
     };
-    const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(reveal); } };
     reveal();                                   // reveal what's already in view before hiding anything
     document.documentElement.classList.add("motion");
-    addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("scroll", reveal, { passive: true });
+    addEventListener("resize", reveal, { passive: true });
     setTimeout(() => rise.forEach(n => n.classList.add("in")), 1500);
   }
 })();
