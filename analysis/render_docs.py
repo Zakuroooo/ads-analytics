@@ -63,7 +63,7 @@ def values():
         "peak_day": peak["day"], "peak_revenue": f"{float(peak['spend_cny']):,.0f}",
         "cpm_min": str(half_up(min(cpms), 2)), "cpm_max": str(half_up(max(cpms), 2)),
         "top_adv_category": top_adv["category"].lower(), "top_adv_share": pct(top_adv["spend_share"]),
-        "clicks": f"{k['clicks']:,}",
+        "clicks": f"{k['clicks']:,}", "conversions": f"{k['conversions']:,}",
         # auction
         "floor_binding": pct(auction["ALL"]["floor_binding_rate"]),
         "share_with_floor": pct(auction["ALL"]["share_with_floor"]),
